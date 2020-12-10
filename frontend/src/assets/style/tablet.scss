@@ -1,0 +1,46 @@
+@media only screen and (min-width: 401px) and (max-width: 1400px) {
+    body {
+        overflow-x: hidden;
+    }
+    header{
+        .lang {
+            margin-left: 10vw!important;
+        }
+    }
+    #news {
+        h1 {
+            font-size: 60px;
+            width:200px;
+        }
+        .carousel {
+            width: 90vw;
+            margin: 0;
+        }
+    }
+    #compute {
+        .compute-box {
+            width: 100%;
+            h1 {
+                font-size: 40px;
+                width: 600px;
+            }
+        }
+    }
+    #auto {
+        .auto-info {
+            h1 {
+                font-size: 50px;
+            }
+            p {
+                font-size: 15px;
+            }
+            width: 100%;
+            .auto-box {
+                width: 100%;
+            }
+            .auto-img {
+                width: 400px;
+            }
+        }
+    }
+}

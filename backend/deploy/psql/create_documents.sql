@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS documents (
+    Id SERIAL PRIMARY KEY,
+    title VARCHAR(500),
+    alias VARCHAR(500),
+    url VARCHAR(500)
+);
