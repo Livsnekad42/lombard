@@ -1,9 +1,29 @@
 <template>
   <div class="row">
-    <div class="col-8">
+    <div class="col-9">
       <h4>Загруженные документы</h4>
+      <div>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Титул</th>
+              <th scope="col">URL</th>
+              <th scope="col">Дата создания</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(document, index) in documents" v-bind:key="index">
+              <td>{{ document.title }}</td>
+              <td>{{ document.url }}</td>
+              <td>{{ document.createdAt | formatDate }}</td>
+              <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <h4>Новый документ</h4>
       <div class="form-group">
         <div v-if="!!errorMessage" class="alert alert-danger">
@@ -14,7 +34,7 @@
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
-        <SelectFiles v-bind:extPatterns="['pdf']" v-on:files="submitFiles" />
+        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf']" v-on:files="submitFiles" />
       </div>
       <div class="_submit-block">
         <button @click="save()" type="button" class="btn btn-primary">Сохранить</button>
@@ -33,14 +53,23 @@ export default {
     return {
       file: null,
       errorMessage: "",
-      titleDocument: ""
+      titleDocument: "",
+      documents: []
     };
   },
   components: {
     SelectFiles
   },
   created() {
-    
+    this.$store.dispatch("getListDocument")
+        .then(response => {
+          if ( response.data ) {
+            this.documents = response.data;
+          }
+        })
+        .catch(err => {
+
+        });
   },
   methods: {
     submitFiles(files) {
@@ -70,8 +99,44 @@ export default {
       const data = new FormData();
       data.append("files", this.file, this.file.name);
       data.append("title", this.titleDocument);
-      console.log("data: ", data);
-      this.$store.dispatch("")
+      this.$store.dispatch("loadDocument", data)
+        .then(response => {
+          if ( !this.$store.dispatch("controlsResponse", response) ) {
+            this.$router.push({ path: "/sign-in-admin" });
+            return;
+          }
+          if ( response.data.document ) {
+            this.documents.push(response.data.document);
+          }
+          this.$refs.selectFiles.files = [];
+          this.titleDocument = "";
+        })
+        .catch(err => {
+          if ( !!err.data && err.data.code === 1 ) {
+            this.$store.dispatch("logout");
+            this.$router.push({ path: "/sign-in-admin" });
+          }
+        });
+    },
+    delDocument(document) {
+      let indexDocument = -1;
+      if ( !document.id ) {
+        indexDocument = this.documents.findIndex(_doc => _doc.url === document.url);
+        if ( indexDocument < 0 ) return;
+        this.documents.splice(indexDocument, 1);
+      } else {
+        indexDocument = this.documents.findIndex(_doc => _doc.id === document.id);
+        this.$store.dispatch("deleteDocument", document.id)
+          .then(response => {
+            console.log(response);
+            if ( !this.$store.dispatch("controlsResponse", response) ) this.$router.push({ path: "/sign-in-admin" });
+            else this.documents.splice(indexDocument, 1);
+          })
+          .catch(err => {
+            if ( !this.$store.dispatch("controlsResponse", err) ) this.$router.push({ path: "/sign-in-admin" });
+            else this.$store.dispatch("toaster", {type: "error", message: "Не удалось удалить документ! Повторите попытку позже."});
+          });
+      }
     }
   }
 };
@@ -85,5 +150,12 @@ export default {
   padding: 10px;
   display: flex;
   justify-content: center;
+}
+tbody {
+  tr {
+    td {
+      font-size: 0.9rem;
+    }
+  }
 }
 </style>

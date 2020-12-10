@@ -10,6 +10,8 @@ import documents from "./modules/documentLoad";
 
 import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
 
+const TOASTER_TIME = 4000;
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -18,7 +20,11 @@ export default new Vuex.Store({
   // },
   state: {
     status: '',
-    user: JSON.parse(localStorage.getItem('user')) || {}
+    user: JSON.parse(localStorage.getItem('user')) || {},
+    modalError: false,
+    modalSuccess: false,
+    modalWarning: false,
+    modalMessage: "",
   },
   mutations: {
     auth_request(state){
@@ -35,6 +41,31 @@ export default new Vuex.Store({
       state.status = ''
       state.user.token = ''
     },
+    toaster(state, modalObj){
+      switch (modalObj.type) {
+        case "error":
+          state.modalError = true;
+          break;
+        case "success":
+          state.modalSuccess = true;
+          break;
+        case "warning":
+          state.modalWarning = true;
+          break;
+      }
+      state.modalMessage = modalObj.message;
+
+      setTimeout(() => {
+        state.modalError = false;
+        state.modalSuccess = false;
+        state.modalWarning = false;
+      }, TOASTER_TIME);
+    },
+    closeToaster(state) {
+      state.modalError = false;
+      state.modalSuccess = false;
+      state.modalWarning = false;
+    }
   },
   actions: {
     login({commit}, user) {
@@ -64,11 +95,34 @@ export default new Vuex.Store({
         removeHeaderAuthorization();
         resolve();
       });
-    }
+    },
+    controlsResponse({commit}, response) {
+      if ( !response.data ) return;
+      const respData = response.data;
+      if ( !!respData && respData.err ) {
+        if ( respData.code === 1 ) {
+          this.dispatch("logout");
+          return;
+        }
+        return false;
+      }
+      return true;
+    },
+    toaster({commit}, data) {
+      if ( data.hide ) {
+        commit("closeToaster");
+        return;
+      }
+      commit("toaster", data);
+    },
   },
   getters : {
     isLoggedIn: state => {return !!state.user.token},
     authStatus: state => state.status,
+    toasterError: state => state.modalError,
+    toasterSuccess: state => state.modalSuccess,
+    toasterWarning: state => state.modalWarning,
+    toasterMessage: state => state.modalMessage,
   },
   modules: {
     modal,

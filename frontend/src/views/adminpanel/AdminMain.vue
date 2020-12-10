@@ -62,7 +62,7 @@
             :to="{ name: 'documentLoad' }" 
             :active-class="'active'"
             class="nav-link">
-            Загрузить договор
+            Загрузить документ
           </router-link>
         </li>
       </ul>

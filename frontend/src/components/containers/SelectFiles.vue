@@ -70,7 +70,9 @@
 <script>
   export default {
     name: "SelectFiles",
-    props: ["extPatterns"],
+    props: [
+        "extPatterns"
+    ],
     data(){
       return {
         files: [],

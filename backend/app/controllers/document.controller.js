@@ -1,14 +1,26 @@
 const fs = require("fs");
+const path = require('path');
 const db = require("../config/db_config");
+const settings = require("./../config/_setings");
 const Documents = db.documents;
 
 const alphabet = {'@': '_', '!': "_", ' ': '-', 'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ы': 'y', 'э': 'e', 'ю': 'yu', 'я': 'ya'}
 
-exports.slug = (str) => {
+function slug (str) {
     try {
-        return str.split("").map(ch => {return !!alphabet[ch] ? alphabet[ch] : ch }).join("");
+        return str.toLowerCase().split("").map(ch => {return !!alphabet[ch] ? alphabet[ch] : ch }).join("");
     } catch (e) {
         return srt;
+    }
+}
+
+async function getDocumentFromID(id) {
+    try {
+        return await Documents.findAll({
+            where: id
+        });
+    } catch (e) {
+        return e;
     }
 }
 /**
@@ -28,13 +40,7 @@ exports.addDocument = async (data) => {
 };
 
 exports.getDocument = async (id) => {
-    try {
-        return await Documents.findAll({
-            where: id
-        });
-    } catch (e) {
-        return e;
-    }
+    await getDocumentFromID(id);
 }
 
 exports.getDocumentList = async () => {
@@ -51,9 +57,9 @@ exports.getDocumentList = async () => {
  * @param data
  */
 exports.editDocument = async (data) => {
-    const document = await getDocument(id);
-    if ( !!document.url ) {
-        data.url = document.url;
+    const document = await getDocumentFromID(id);
+    if ( !!document[0].url ) {
+        data.url = document[0].url;
     }
     try {
         return await Documents.update(data, {
@@ -71,9 +77,10 @@ exports.editDocument = async (data) => {
  * @param id
  */
 exports.destroyDocument = async (id) => {
-    const document = await getDocument(id);
-    if ( !!document.url ) {
-        fs.unlink(document.url, (err) => {});
+    const document = await getDocumentFromID(id);
+    if ( !!document[0].url ) {
+        fs.unlink(path.join(settings.basePath, document[0].url), (err) => {
+        });
     }
     try {
         return await Documents.destroy({

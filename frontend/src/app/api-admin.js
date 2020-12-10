@@ -77,8 +77,14 @@ export const destroyAffiliate = async id =>
 export const signInAdminPanelApi = data =>
   http.post("/auth/sign-in-admin", data);
 
-export const addDocument = data =>
-    http.post("/api/media/create-document", data);
+export const getListDocument = async data =>
+    await http.get("/media/documentList");
+
+export const addDocument = async data =>
+    await http.post("/media/create-document", data);
+
+export const delDocument = async data =>
+    await http.post("/media/destroy-document", data);
 
 export function setHeaderAuthorization(token) {
     http.defaults.headers.common["Authorization"] = `Auth ${token}`;

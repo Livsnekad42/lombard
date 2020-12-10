@@ -18,8 +18,8 @@
     "easy-soap-request": "^3.3.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
-    "jsonwebtoken": "^8.5.1",
     "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.3",
     "pg": "^8.3.0",
@@ -28,6 +28,5 @@
     "sequelize": "^6.3.4",
     "soap": "^0.31.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

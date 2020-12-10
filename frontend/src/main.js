@@ -2,11 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import formatDate from "../src/filters/dataFilter";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";
 import VueMask from "v-mask";
 import * as VueGoogleMaps from "vue2-google-maps";
+
+
 Vue.use(VueMask);
 Vue.use(VueGoogleMaps, {
   load: {
@@ -18,6 +21,9 @@ Vue.use(VueGoogleMaps, {
 import { VueMaskDirective } from "v-mask";
 Vue.directive("mask", VueMaskDirective);
 Vue.config.productionTip = false;
+
+// register filters
+Vue.filter("formatDate", formatDate.formatDate);
 
 new Vue({
   router,

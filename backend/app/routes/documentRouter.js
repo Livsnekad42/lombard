@@ -37,9 +37,9 @@ router.post("/create-document", (req, res) => {
     if ( !data.title ) {
         res.status(400).json({err: true, text: "Заполните обязательные поля", code: errorsCode.no_valid});
     } else {
-        let file = req.files.file;
-        const path = settings + file.name;
-        file.mv(path);
+        let file = req.files.files;
+        const path = settings.media + file.name;
+        file.mv("." + path);
         data.url = path;
         addDocument(data)
             .then(document => {

@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const loger = require("morgan");
 const cookieParser = require("cookie-parser");
+const fileUpload = require('express-fileupload');
 
 const authRouter = require("./app/routes/authRouter");
 const loanRouter = require("./app/routes/loanRouter");
@@ -12,12 +13,14 @@ const documentRouter = require("./app/routes/documentRouter");
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
 
+settings.basePath = __dirname;
 const safe_methods = [
   "/api/auth"
 ];
 
-// app.set("host", "127.0.0.1");
-// app.set("port", "3000");
+app.use(fileUpload({
+  createParentPath: true
+}));
 app.use(loger("dev"));
 app.use(bodyParser.json());
 app.use(
@@ -77,6 +80,7 @@ app.use(cookieParser());
 // const cors = require("cors");
 // app.use(cors());
 
+app.use("/media", express.static(__dirname + '/media'));
 app.use("/api/auth", authRouter);
 app.use("/api/loan", loanRouter);
 app.use("/api/map", mapRouter);
