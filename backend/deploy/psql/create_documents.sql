@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS documents (
     "updatedAt" timestamp with time zone NOT NULL
 );
 
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to localtez;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO localtez;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO postgres;
