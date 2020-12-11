@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require('path');
 const settings = require("./../config/_setings");
 
 const {
@@ -38,9 +39,9 @@ router.post("/create-document", (req, res) => {
         res.status(400).json({err: true, text: "Заполните обязательные поля", code: errorsCode.no_valid});
     } else {
         let file = req.files.files;
-        const path = settings.media + file.name;
-        file.mv("." + path);
-        data.url = path;
+        const _path = settings.media + file.name;
+        file.mv(path.join(settings.basePath, _path));
+        data.url = _path;
         addDocument(data)
             .then(document => {
                 res.status(200).json({ document });
