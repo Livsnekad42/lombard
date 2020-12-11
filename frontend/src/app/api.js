@@ -1,5 +1,6 @@
 import http from "./settings/axios";
 import { getCookie } from "../app/settings/token";
+
 export const authorized = async data =>
   await http.get("/auth/start-incoming", data);
 

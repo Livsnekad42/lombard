@@ -17,7 +17,7 @@ const actions = {
    */
   async getAuthorize(data) {
     return await new Promise((resolve, reject) => {
-      if (getCookie() === "undefined" || typeof getCookie() === "undefined") {
+      if (getCookie() === undefined || typeof getCookie() === "undefined") {
         authorized(data)
           .then(res => {
             setCookie({ value: res.data.data.token });

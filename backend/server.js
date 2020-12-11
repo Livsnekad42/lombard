@@ -15,7 +15,8 @@ const errorsCode = require("./app/config/_error_type");
 
 settings.basePath = __dirname;
 const safe_methods = [
-  "/api/auth"
+    "/api/auth.*",
+    "/api/loan.*"
 ];
 
 app.use(fileUpload({
@@ -52,7 +53,8 @@ app.use((req, res, next) => {
   }
 
   for (const safe of safe_methods) {
-    if ( req.path.startsWith(safe) ) {
+    const regPath = new RegExp(safe);
+    if ( regPath.test(req.path) ) {
       next();
       return;
     }
