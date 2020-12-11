@@ -8,7 +8,7 @@
       <div class="col-6">
         <h1><span>Online</span> <br />продление</h1>
         <p>Быстрое продление займа без регистрации.</p>
-        <button @click="showModal = 'startRefinance'"
+        <button
                 type="button"
           class="btn mt-3 open-btn">
           Продлить заем
@@ -37,6 +37,7 @@ export default {
     ...mapMutations(["setModalBase"])
   }
 };
+// @click="showModal = 'startRefinance'"
 </script>
 
 <style scoped lang="scss">

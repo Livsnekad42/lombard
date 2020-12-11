@@ -32,7 +32,7 @@ const mutations = {
 
 const actions = {
   startSMSVerification({ state, dispatch, commit }) {
-    // if (!state.captchaVerify) return;
+    if (!state.captchaVerify) return;
     dispatch("currentOverdraftSmsCode", state.incomeData)
       .then(() => {
         const titleText = "На ваш номер отправлено смс с кодом подтверждения";
