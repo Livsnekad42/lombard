@@ -2,7 +2,7 @@
   <section id="compute">
     <div class="row compute-box mx-auto text-center">
       <h1 class="mx-auto">Рассчитайте стоимость займа</h1>
-      <div class="container mt-4">
+      <div class="container mt-4 mx-3 px-3">
         <div class="mt-4 text-left comp">
           <div class="ml-lg-2 compute-boxes gold">
             <p>Проба золота</p>
@@ -66,7 +66,7 @@
           займа, пожалуйста, посетите наш ближайший филиал.
         </p>
       </div>
-      <button class="btn w-100 mt-4" type="button">Заказать звонок</button>
+      <button class="btn w-100 mt-4 mx-3" type="button">Заказать звонок</button>
     </div>
   </section>
 </template>
@@ -172,18 +172,14 @@ export default {
 <style scoped lang="scss">
 #compute {
   background-color: #f1f2f6;
-  height: 858px;
   .compute-box {
-    width: 858px;
     h1 {
       text-transform: uppercase;
       font-size: 54px;
-      width: 720px;
       margin-top: 100px;
       font-weight: bold;
     }
     .container {
-      width: 860px;
       background-color: #fff;
       height: 335px;
       border-radius: 11px;
@@ -284,7 +280,6 @@ export default {
         display: flex;
         height: 62px;
         .sums {
-          width: 429px;
           p {
             font-size: 20px;
             color: #2b2a29;
@@ -339,7 +334,6 @@ export default {
       width: 100%;
       .container {
         width: 90%;
-        height: 600px;
         .comp {
           display: block;
           .compute-boxes {
