@@ -1,6 +1,5 @@
 <template>
   <section id="online">
-    <div class="triangle"></div>
     <div class="row online-box mx-auto">
       <div class="col-6 card-img">
         <!-- <img src="../assets/images/15740.png" class="online-img"> -->
