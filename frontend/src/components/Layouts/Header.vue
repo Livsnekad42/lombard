@@ -1,8 +1,8 @@
 <template>
   <header>
     <nav class="row">
-      <div class="col-sm-4 col-12 d-flex justify-content-center align-items-center">
-        <a class="navbar-brand logo" href="#">
+      <div class="col-sm-4 col-12 my-4 d-flex justify-content-center align-items-center">
+        <a class="logo" href="#">
           <img src="@/assets/images/Group5Copy.png" class="logo" />
         </a>
       </div>
@@ -10,12 +10,12 @@
         <div id="navbarNav">
           <ul class="list-unstyled d-flex flex-column justify-content-center align-items-center text-left">
             <li><a class="nav-link" href="#">Тегін қоңырау шалу</a></li>
-            <li><a class="nav-link number" href="#">8 800 080 7171</a></li>
+            <li><a class="nav-link number" href="tel:88000807171">8 800 080 7171</a></li>
             <li><a class="nav-link" href="#">Звонок бесплатный</a></li>
           </ul>
         </div>
       </div>
-      <div class="col-sm-4 d-none">
+      <div class="col-sm-4 d-none d-sm-block">
             <ul v-if="!$store.getters.isLoggedIn" class="lang">
               <li class="nav-item">
                 <a class="nav-link" href="#">ҚАЗ</a>
@@ -56,14 +56,18 @@ header {
   background-color: #002e90;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
   z-index: 9999;
+  .logo {
+    margin-left: 0 !important;
+  }
   nav {
 
     .navbar-brand {
-      margin-left: 100px;
+
       .logo {
         width: 300px;
         height: 35px;
         object-fit: contain;
+        margin-left: 0;
       }
     }
     ul {
