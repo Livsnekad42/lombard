@@ -7,6 +7,7 @@ import prolongation from "./modules/prolongation";
 import loader from "./modules/loader";
 import loanCalc from "./modules/loanCalc";
 import documents from "./modules/documentLoad";
+import comments from "./modules/comments";
 
 import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
 
@@ -131,6 +132,7 @@ export default new Vuex.Store({
     loader,
     loanCalc,
     requestAdmin,
-    documents
+    documents,
+    comments
   }
 });

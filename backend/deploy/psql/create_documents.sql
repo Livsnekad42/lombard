@@ -7,5 +7,15 @@ CREATE TABLE IF NOT EXISTS documents (
     "updatedAt" timestamp with time zone NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS comments (
+    Id SERIAL PRIMARY KEY,
+    username VARCHAR(200),
+    content VARCHAR(500),
+    avatar VARCHAR(500),
+    "isPublic" BOOLEAN,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO postgres;

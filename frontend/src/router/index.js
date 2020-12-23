@@ -5,6 +5,7 @@ import SignIn from "../views/adminpanel/SignIn";
 import AdminMain from "../views/adminpanel/AdminMain";
 import MapControl from "../views/adminpanel/control-panels/MapControl";
 import DocumentControl from "../views/adminpanel/control-panels/DocumentControl";
+import CommentControl from "../views/adminpanel/control-panels/CommentsControl";
 import store from "../store";
 
 const ifNotAuth = (to, from, next) => {
@@ -59,6 +60,15 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: "/admin-panel/comments",
+        name: "comments",
+        component: CommentControl,
+        beforeEnter: ifAuth,
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
@@ -73,26 +83,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
-// router.beforeEach((to, from, next) => {
-//   if ( store.getters.isLoggedIn && to.name === "SignIn" ) {
-//     next('/admin-panel');
-//     return;
-//   }
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (store.getters.isLoggedIn) {
-//       console.log("Guards: ", to);
-//       next();
-//     } else {
-//       if (from.path === '/sign-in-admin') {
-//         next();
-//         return;
-//       }
-//       next('/sign-in-admin');
-//     }
-//   } else {
-//     next();
-//   }
-// });
 
 export default router;

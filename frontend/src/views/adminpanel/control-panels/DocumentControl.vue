@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row page__spa">
     <div class="col-9">
       <h4>Загруженные документы</h4>
       <div>
@@ -68,7 +68,7 @@ export default {
           }
         })
         .catch(err => {
-
+          this.$store.dispatch("toaster", {type: "error", message: "Не удалось загрузить докумены! Повторите попытку позже."});
         });
   },
   methods: {
@@ -101,10 +101,6 @@ export default {
       data.append("title", this.titleDocument);
       this.$store.dispatch("loadDocument", data)
         .then(response => {
-          if ( !this.$store.dispatch("controlsResponse", response) ) {
-            this.$router.push({ path: "/sign-in-admin" });
-            return;
-          }
           if ( response.data.document ) {
             this.documents.push(response.data.document);
           }
@@ -112,10 +108,7 @@ export default {
           this.titleDocument = "";
         })
         .catch(err => {
-          if ( !!err.data && err.data.code === 1 ) {
-            this.$store.dispatch("logout");
-            this.$router.push({ path: "/sign-in-admin" });
-          }
+          this.$store.dispatch("toaster", {type: "error", message: "Не удалось сохранить документ! Повторите попытку позже."});
         });
     },
     delDocument(document) {
@@ -128,9 +121,7 @@ export default {
         indexDocument = this.documents.findIndex(_doc => _doc.id === document.id);
         this.$store.dispatch("deleteDocument", document.id)
           .then(response => {
-            console.log(response);
-            if ( !this.$store.dispatch("controlsResponse", response) ) this.$router.push({ path: "/sign-in-admin" });
-            else this.documents.splice(indexDocument, 1);
+            this.documents.splice(indexDocument, 1);
           })
           .catch(err => {
             if ( !this.$store.dispatch("controlsResponse", err) ) this.$router.push({ path: "/sign-in-admin" });
@@ -143,9 +134,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.row {
-  padding: 1rem;
-}
 ._submit-block {
   padding: 10px;
   display: flex;

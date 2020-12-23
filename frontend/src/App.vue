@@ -84,4 +84,5 @@ export default {
 @import "./assets/style/mobile";
 @import "./assets/style/tablet";
 @import "./assets/style/main";
+@import "./assets/style/modal";
 </style>
