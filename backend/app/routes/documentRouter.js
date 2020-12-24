@@ -40,7 +40,7 @@ router.post("/create-document", (req, res) => {
     } else {
         let file = req.files.files;
         const _path = settings.media + file.name;
-        file.mv(path.join(settings.basePath, _path));
+	file.mv(path.join(settings.basePath, _path));
         data.url = _path;
         addDocument(data)
             .then(document => {
