@@ -65,6 +65,14 @@
             Загрузить документ
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link
+              :to="{ name: 'comments' }"
+              :active-class="'active'"
+              class="nav-link">
+            Комментарии
+          </router-link>
+        </li>
       </ul>
     </div>
     <div class="main-content">

@@ -10,6 +10,7 @@ const authRouter = require("./app/routes/authRouter");
 const loanRouter = require("./app/routes/loanRouter");
 const mapRouter = require("./app/routes/mapRouter");
 const documentRouter = require("./app/routes/documentRouter");
+const commentsRouter = require("./app/routes/commentsRouter");
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
 
@@ -73,7 +74,7 @@ app.use((req, res, next) => {
     )
   }
   if ( !req.payload || !req.payload.id ) {
-    res.status(201).json({err: true, text: "Не авторизованный пользователь", code: errorsCode.no_permission});
+    res.status(401).send();
   }
 })
 
@@ -87,6 +88,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/loan", loanRouter);
 app.use("/api/map", mapRouter);
 app.use("/api/media", documentRouter);
+app.use("/api/comments", commentsRouter);
 
 const db = require("./app/config/db_config.js");
 const { createUser } = require("./app/controllers/user.controller");

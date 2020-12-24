@@ -86,6 +86,18 @@ export const addDocument = async data =>
 export const delDocument = async data =>
     await http.post("/media/destroy-document", data);
 
+export const getListComment = async () =>
+    await http.get("/comments/commentList");
+
+export const addComment = async data =>
+    await http.post("/comments/create-comment", data);
+
+export const delComment = async data =>
+    await http.post("/comments/destroy-comment", data);
+
+export const editComment = async data =>
+    await http.post("/comments/edit-comment", data);
+
 export function setHeaderAuthorization(token) {
     http.defaults.headers.common["Authorization"] = `Auth ${token}`;
 };
