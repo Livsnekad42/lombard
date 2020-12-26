@@ -78,16 +78,21 @@
     <div class="main-content">
       <router-view></router-view>
     </div>
+    <Toastr/>
   </div>
 </template>
 
 <script>
+import Toastr from "../../components/modals/Toastr";
 export default {
   name: "Main",
   data() {
     return {
       leftNavBlock: true
     }
+  },
+  components: {
+    Toastr,
   },
   methods: {
     toggleLeftNavBlock() {

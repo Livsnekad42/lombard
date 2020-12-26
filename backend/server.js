@@ -6,6 +6,7 @@ const loger = require("morgan");
 const cookieParser = require("cookie-parser");
 const fileUpload = require('express-fileupload');
 
+const RedisApi = require("./app/config/_redis");
 const authRouter = require("./app/routes/authRouter");
 const loanRouter = require("./app/routes/loanRouter");
 const mapRouter = require("./app/routes/mapRouter");
@@ -13,6 +14,21 @@ const documentRouter = require("./app/routes/documentRouter");
 const commentsRouter = require("./app/routes/commentsRouter");
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
+
+// Устанавливаем копоративный токен при запуске сервера
+const redisApi = new RedisApi();
+redisApi._init();
+redisApi.setAuthToken()
+    .then(token => {
+      if ( !!token ) {
+        console.log("token installed");
+        return;
+      }
+      console.log("token not installed");
+    })
+    .catch(err => {
+      console.log("token not installed: ", err);
+    });
 
 settings.basePath = __dirname;
 const safe_methods = [
@@ -77,6 +93,18 @@ app.use((req, res, next) => {
     res.status(401).send();
   }
 })
+
+// Пробрасываем копоративный токен в объект запроса, для удобства
+app.use((req, res, next) => {
+  redisApi.getAuthToken()
+      .then(token => {
+        req.tokenElombard = token;
+        next();
+      })
+      .catch(err => {
+        res.status(401).json({error: "Not Auth Token"});
+      });
+});
 
 global.__baseurl = "http://back-tezlombard.kz";
 app.use(cookieParser());

@@ -8,7 +8,7 @@
       <div class="col-6">
         <h1><span>Online</span> <br />продление</h1>
         <p>Быстрое продление займа без регистрации.</p>
-        <button
+        <button @click="showModal = 'startRefinance'"
                 type="button"
           class="btn mt-3 open-btn">
           Продлить заем

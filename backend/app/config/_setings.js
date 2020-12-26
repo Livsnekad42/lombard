@@ -1,5 +1,6 @@
 exports.mainLogin = "TezLombardUser";
 exports.mainPassword = "8a$Lnz$B8Y6";
+exports.expiresToken = 60 * 40;
 exports.bin = "141040021479";
 // exports.mid = "000000000000058";
 exports.basePath = "";
