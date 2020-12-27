@@ -5,6 +5,7 @@ const { signInAdminPanel } = require("../controllers/user.controller");
 const settings = require("../config/_setings");
 const jwt = require('jsonwebtoken');
 
+// TODO: В следующем коммите удалить
 // router.get("/start-incoming", (req, res) => {
 //   authService
 //     .getAuthorization()

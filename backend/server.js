@@ -12,6 +12,7 @@ const loanRouter = require("./app/routes/loanRouter");
 const mapRouter = require("./app/routes/mapRouter");
 const documentRouter = require("./app/routes/documentRouter");
 const commentsRouter = require("./app/routes/commentsRouter");
+const publicRouter = require("./app/routes/publicRouter");
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
 
@@ -33,7 +34,8 @@ redisApi.setAuthToken()
 settings.basePath = __dirname;
 const safe_methods = [
     "/api/auth.*",
-    "/api/loan.*"
+    "/api/loan.*",
+    "/api/public.*",
 ];
 
 app.use(fileUpload({
@@ -117,6 +119,7 @@ app.use("/api/loan", loanRouter);
 app.use("/api/map", mapRouter);
 app.use("/api/media", documentRouter);
 app.use("/api/comments", commentsRouter);
+app.use("/api/public", publicRouter);
 
 const db = require("./app/config/db_config.js");
 const { createUser } = require("./app/controllers/user.controller");

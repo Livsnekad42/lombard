@@ -23,6 +23,18 @@ exports.getCommentList = async () => {
     }
 }
 
+exports.getPublicCommentList = async () => {
+    try {
+        return await Comments.findAll({
+            where: {
+                isPublic: true,
+            },
+        });
+    } catch (e) {
+        return e;
+    }
+}
+
 /**
  * Метод удаления документа
  *
