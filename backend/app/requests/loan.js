@@ -9,3 +9,5 @@ exports.getCurrentOverdraftWithCodeSMS = (data) => http.post("CurrentOverdraftWi
 exports.createProlongations = (data) =>
   http.post("CreatePawnTicketProlongation", data);
 
+exports.loanCalculate = (data) => http.post("CreditCalculator", data);
+
