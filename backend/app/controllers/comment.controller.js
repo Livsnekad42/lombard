@@ -18,7 +18,7 @@ exports.addComment = async (data) => {
 
 exports.getCommentList = async () => {
     try {
-        return await Comments.findAll({include: City});
+        return await Comments.findAll({foreignKey: 'cityId', as: 'City'});
     } catch (e) {
         return e;
     }
@@ -30,7 +30,7 @@ exports.getPublicCommentList = async () => {
             where: {
                 isPublic: true,
             },
-            include: City,
+            foreignKey: 'cityId', as: 'City'
         });
     } catch (e) {
         return e;
