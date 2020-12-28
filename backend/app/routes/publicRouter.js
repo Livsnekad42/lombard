@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
+const { getCityAllLocations } = require("../controllers/map.controller");
 const {
     addComment,
     getPublicCommentList,
 } = require("../controllers/comment.controller");
 const errorsCode = require("../../app/config/_error_type");
 
+// Comments
 router.get("/comments", (req, res) => {
     getPublicCommentList()
         .then((documents) => {
@@ -28,6 +30,15 @@ router.post("/createComment", (req, res) => {
         .catch((err) => {
             res.status(400).json(err)
         });
+});
+
+// City
+router.get("/all-city-location", (req, res) => {
+    getCityAllLocations()
+        .then((cityLocations) => {
+            res.status(200).json(cityLocations);
+        })
+        .catch((err) => res.status(400).json(err));
 });
 
 module.exports = router;

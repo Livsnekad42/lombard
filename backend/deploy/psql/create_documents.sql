@@ -9,12 +9,15 @@ CREATE TABLE IF NOT EXISTS documents (
 
 CREATE TABLE IF NOT EXISTS comments (
     Id SERIAL PRIMARY KEY,
+    project VARCHAR(200),
     username VARCHAR(200),
     content VARCHAR(500),
     avatar VARCHAR(500),
+    cityId INTEGER,
     "isPublic" BOOLEAN,
     "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "updatedAt" timestamp with time zone NOT NULL,
+    FOREIGN KEY (cityId) REFERENCES "cityLocs"(Id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres;
