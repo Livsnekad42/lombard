@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {
-  addCityLocation,
-  editCityLocation,
-  destroyCityLocation,
-  getCityAllLocations,
-  addAffiliateLocation,
-  getCityAffiliateLocations,
+    addCityLocation,
+    editCityLocation,
+    destroyCityLocation,
+    getCityAllLocations,
+    addAffiliateLocation,
+    getCityAffiliateLocations,
     editAffiliateLocation,
     destroyAffiliateLocation,
     getCityAllLocationsAndAffiliate

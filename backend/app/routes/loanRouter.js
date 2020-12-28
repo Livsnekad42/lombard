@@ -7,7 +7,7 @@ router.post("/getCurrentLoan", function (req, res) {
   loanService
     .currentLoan({
       ...req.body,
-      ...{ token: req.header("x-requested-with") },
+      ...{ token: req.tokenElombard },
     })
     .then((loan) => {
       res.status(200).json(loan.data);
@@ -19,7 +19,7 @@ router.post("/currentOverdraftSmsCode", function (req, res) {
   loanService
     .currentOverdraftSmsCode({
       ...req.body,
-      ...{ token: req.header("x-requested-with") },
+      ...{ token: req.tokenElombard },
     })
     .then((loan) => {
       res.status(200).json(loan.data);
@@ -31,7 +31,7 @@ router.post("/currentOverdraftWithCodeSMS", function (req, res) {
   loanService
     .currentOverdraftWithCodeSMS({
       ...req.body,
-      ...{ token: req.header("x-requested-with") },
+      ...{ token: req.tokenElombard },
     })
     .then((loan) => {
       res.status(200).json(loan.data);
@@ -67,7 +67,7 @@ router.post("/checkStatus", function (req, res) {
         loanService
           .getCreateProlongations({
             ...req.body,
-            ...{ token: req.header("x-requested-with") },
+            ...{ token: req.tokenElombard },
           })
           .then((results) => {
             console.log(results.data);
@@ -85,8 +85,7 @@ router.post("/checkStatus", function (req, res) {
         }
     })
     .catch((err) => {
-        // console.log('==errr',  err)
-        res.status(500).json(err)
+        res.status(500).json(err);
     })
 });
 

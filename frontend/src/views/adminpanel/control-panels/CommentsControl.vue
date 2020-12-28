@@ -70,9 +70,11 @@ export default {
       errorMessage: "",
       commentList: [],
       comment: {
+        project: "",
         username: "",
         content: "",
         avatar: "",
+        city: null, // type Number Citi.ID
         isPublic: true
       },
       commentEdit: null,

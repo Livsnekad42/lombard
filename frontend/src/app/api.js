@@ -6,20 +6,20 @@ export const authorized = async data =>
 
 export const getLoan = async data =>
   await http.post("/loan/getCurrentLoan", data, {
-    headers: { "X-Requested-With": getCookie() }
+    headers: { "X-Requested-With": "_bck" }
   });
 export const getCurrentOverdraftSmsCode = async data =>
   await http.post("/loan/currentOverdraftSmsCode", data, {
-    headers: { "X-Requested-With": getCookie() }
+    headers: { "X-Requested-With": "_bck" }
   });
 export const getCurrentOverdraftWithCodeSMS = async data =>
   await http.post("/loan/currentOverdraftWithCodeSMS", data, {
-    headers: { "X-Requested-With": getCookie() }
+    headers: { "X-Requested-With": "_bck" }
   });
 
 export const createProlongation = async data =>
   await http.post("/loan/createProlongations", data, {
-    headers: { "X-Requested-With": getCookie() }
+    headers: { "X-Requested-With": "_bck" }
   });
 
 export const startTransactions = async data =>
@@ -27,5 +27,5 @@ export const startTransactions = async data =>
 
 export const getProcessingStatus = async data =>
   await http.post("/loan/checkStatus", data, {
-    headers: { "X-Requested-With": getCookie() }
+    headers: { "X-Requested-With": "_bck" } // getCookie()
   });
