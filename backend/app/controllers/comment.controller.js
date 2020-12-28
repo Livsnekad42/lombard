@@ -1,6 +1,7 @@
 const db = require("../config/db_config");
 const settings = require("./../config/_setings");
 const Comments = db.comments;
+const City = db.cityLoc;
 
 /**
  * Метод добавления комментария
@@ -17,7 +18,7 @@ exports.addComment = async (data) => {
 
 exports.getCommentList = async () => {
     try {
-        return await Comments.findAll();
+        return await Comments.findAll({include: City});
     } catch (e) {
         return e;
     }
@@ -29,6 +30,7 @@ exports.getPublicCommentList = async () => {
             where: {
                 isPublic: true,
             },
+            include: City,
         });
     } catch (e) {
         return e;

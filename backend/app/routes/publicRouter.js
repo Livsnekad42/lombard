@@ -18,8 +18,18 @@ router.get("/comments", (req, res) => {
 });
 
 router.post("/createComment", (req, res) => {
+    /*
+    * data: {
+    *   username: string;
+    *   content: string;
+    *   project: string;
+    *   avatar: string;
+    *   isPublic: boolean;
+    *   cityId: number
+    * }
+    * */
     const data = req.body;
-    if ( !data.username || !data.content ) {
+    if ( !data.username || !data.content || !data.project || !data.cityId ) {
         res.status(400).json({err: true, text: "Не заполнены обязательные поля.", code: errorsCode.no_valid});
         return;
     }

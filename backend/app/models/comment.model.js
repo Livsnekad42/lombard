@@ -1,5 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     return sequelize.define('comment', {
+        cityId: {
+            type: Sequelize.INTEGER,
+        },
         project: {
             type: Sequelize.STRING
         },
@@ -15,8 +18,5 @@ module.exports = (sequelize, Sequelize) => {
         isPublic: {
             type: Sequelize.BOOLEAN,
         },
-        cityId: {
-            type: Sequelize.INTEGER,
-        }
     });
 }
