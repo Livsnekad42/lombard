@@ -1,10 +1,10 @@
 <template>
   <section id="online">
     <div class="row online-box mx-auto">
-      <div class="col-6 card-img">
-        <!-- <img src="../assets/images/15740.png" class="online-img"> -->
-      </div>
-      <div class="col-6">
+   <!--   <div class="col-12 col-md-6"> -->
+         <img src="../../assets/images/15740.png" class="col-12 col-md-6 card-img">
+      <!-- </div> -->
+      <div class="col-12 col-md-6 loan-button-group">
         <h1><span>Online</span> <br />продление</h1>
         <p>Быстрое продление займа без регистрации.</p>
         <button
@@ -64,7 +64,7 @@ export default {
   }
   .card-img {
     // margin-top:-10px;
-    background: url("../../assets/images/15740.png") no-repeat;
+ //   background: url("../../assets/images/15740.png") no-repeat;
     background-size: 1000px;
     box-shadow: inset -200px 0px 165px -28px rgba(255, 255, 255, 1);
     border: none;
@@ -74,7 +74,6 @@ export default {
     margin-top: 180px;
     font-size: 64px;
     font-weight: bold;
-    width: 569px;
     span {
       color: #0001ea;
     }
@@ -95,8 +94,16 @@ export default {
   #online {
     width: 100%;
     // height: 50vh;
+    height: auto;
+    .online-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     h1 {
       font-size: 30px;
+      margin-top: 50px;
     }
     p {
       font-size: 10px;
@@ -184,6 +191,29 @@ export default {
         }
       }
     }
+  }
+  .loan-button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+      h1 {
+        text-align: center;
+      }
+  }
+  .loan-button-group {
+    margin-bottom: 130px;
+  }
+}
+@media (max-width: 425px) {
+  .loan-button-group {
+      margin-bottom: 0;
+    }
+}
+@media (max-width: 1000px) {
+  #online button {
+    height: auto !important;
+    font-size: 24px !important;
   }
 }
 </style>

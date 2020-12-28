@@ -1,11 +1,11 @@
 <template>
   <section id="compute">
-    <div class="container compute-box mx-auto text-center" style="max-width: 860px;">
+    <div class="container compute-box mx-auto text-center" style="max-width: 920px;">
       <h1 class="mx-auto">Рассчитайте стоимость займа</h1>
-      <div class="row mt-4 mx-3 px-3">
-        <div class="col-sm-12 mt-4 text-left comp">
-          <div class="row">
-            <div class="col-sm-4 compute-boxes gold">
+      <div class="row mt-4" id="wr-calc">
+        <div class="col-sm-12 mt-4 text-left comp justify-content-center">
+          <div class="row flex-column flex-md-row justify-content-center" style="box-shadow: none">
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes gold">
               <p>Проба золота</p>
               <div class="ml-3 box-inside">
                 <CustomCheckBox
@@ -28,7 +28,7 @@
                 <!--                            <span class="box-text">750</span>-->
               </div>
             </div>
-            <div class="col-sm-4 compute-boxes">
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes">
               <p class="mb-2">Вес изделия, гр</p>
               <input
                 v-mask="'######'"
@@ -36,7 +36,7 @@
                 v-model="weight"
               />
             </div>
-            <div class="col-sm-4 compute-boxes">
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes">
               <p class="mb-2">Срок (5 - 60 дней)</p>
               <input
                 v-mask="'##'"
@@ -53,13 +53,13 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12 sum mx-auto mt-4">
+        <div class="col-sm-12 sum mx-auto mt-4 justify-content-center flex-column flex-md-row">
           <div class="sums sums-border">
             <p>Сумма на руки</p>
             <h2>{{ amount.toLocaleString("ru") }} &#8376;</h2>
           </div>
           <div class="sums no-border">
-            <p>Сумма к возврату</p>
+            <p>Сумма к воврату</p>
             <h2>{{ returnedAmount.toLocaleString("ru") }} &#8376;</h2>
           </div>
         </div>
@@ -68,7 +68,7 @@
           займа, пожалуйста, посетите наш ближайший филиал.
         </p>
       </div>
-      <button class="btn w-100 mt-4 mx-3" type="button">Заказать звонок</button>
+      <button class="btn w-100 mt-4" type="button">Заказать звонок</button>
     </div>
   </section>
 </template>
@@ -174,6 +174,7 @@ export default {
 <style scoped lang="scss">
 #compute {
   background-color: #f1f2f6;
+  padding-bottom: 100px;
   .compute-box {
     h1 {
       text-transform: uppercase;
@@ -296,12 +297,6 @@ export default {
           border-right: 2px dashed #000;
 
         }
-        .no-border {
-          p,
-          h2 {
-            padding-right: 100px;
-          }
-        }
       }
       .text-compute {
         color: #9b9b9b;
@@ -325,6 +320,10 @@ export default {
     }
     .compute-box {
       width: 100%;
+      h1 {
+        padding-bottom: 30px;
+        padding-top: 30px;
+      }
       .container {
         width: 90%;
         .comp {
@@ -338,6 +337,7 @@ export default {
           flex-direction: column;
         }
         .sums {
+
           p {
             font-size: 15px !important;
             padding-left: 0px !important;
@@ -347,6 +347,7 @@ export default {
             padding-left: 0px !important;
           }
         }
+
         .no-border {
           p {
             padding-right: 0px !important;
@@ -364,6 +365,39 @@ export default {
         font-size: 20px;
       }
     }
+  }
+  .sums-border {
+    border-right: none !important;
+    border-bottom: 2px dashed #000;;
+  }
+}
+
+@media (min-width: 768px) {
+  .sums-border {
+    margin-right: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 600px) {
+  .compute-boxes {
+    max-width: 220px !important;
+  }
+  #compute .compute-box .row .comp .compute-boxes .dotted-input {
+    width: 180px;
+
+    .gold {
+      text-align: center !important;
+      justify-content: center !important;
+      padding-left: 0 !important;
+    }
+  }
+  .logo {
+    max-width: 100%;
+  }
+  #wr-calc {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 </style>
