@@ -29,6 +29,5 @@
     "sequelize": "^6.3.4",
     "soap": "^0.31.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
