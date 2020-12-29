@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="shit">
     <!--    <News />-->
     <LoanCalculate />
     <Prolongation />

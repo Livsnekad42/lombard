@@ -207,4 +207,23 @@ export default {
     }
   }
 }
+@media (max-width: 769px) {
+  .map-block {
+    & .container {
+      & h1 {
+        font-size: 44px !important;
+      }
+    }
+    & .content {
+      flex-direction: column !important;
+      width: 100% !important;
+      & .map-container {
+        width: 100% !important;
+      }
+      & .locations-container {
+        width: 100% !important;
+      }
+    }
+  }
+}
 </style>

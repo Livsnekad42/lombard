@@ -1,67 +1,69 @@
 <template>
   <section id="compute">
-    <div class="row compute-box mx-auto text-center">
+    <div class="container compute-box mx-auto text-center" style="max-width: 920px;">
       <h1 class="mx-auto">Рассчитайте стоимость займа</h1>
-      <div class="container mt-4">
-        <div class="mt-4 text-left comp">
-          <div class="ml-lg-2 compute-boxes gold">
-            <p>Проба золота</p>
-            <div class="ml-3 box-inside">
-              <CustomCheckBox
-                v-for="(probe, index) in goldProbeArray"
-                :param="probe"
-                :boxKey="probe"
-                :key="index"
-                :status="probe === goldProbe"
-                v-model="goldProbe"
+      <div class="row mt-4" id="wr-calc">
+        <div class="col-sm-12 mt-4 text-left comp justify-content-center">
+          <div class="row flex-column flex-md-row justify-content-center" style="box-shadow: none">
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes gold">
+              <p>Проба золота</p>
+              <div class="ml-3 box-inside">
+                <CustomCheckBox
+                  v-for="(probe, index) in goldProbeArray"
+                  :param="probe"
+                  :boxKey="probe"
+                  :key="index"
+                  :status="probe === goldProbe"
+                  v-model="goldProbe"
+                />
+                <!--                            <div class="round">-->
+                <!--                              <input type="checkbox" id="checkbox" />-->
+                <!--                              <label for="checkbox"></label>-->
+                <!--                            </div>-->
+                <!--                            <span class="box-text">583/585</span>-->
+                <!--                            <div class="ml-3 round">-->
+                <!--                              <input type="checkbox" id="checkbox1" />-->
+                <!--                              <label for="checkbox1"></label>-->
+                <!--                            </div>-->
+                <!--                            <span class="box-text">750</span>-->
+              </div>
+            </div>
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes">
+              <p class="mb-2">Вес изделия, гр</p>
+              <input
+                v-mask="'######'"
+                class="ml-3 dotted-input"
+                v-model="weight"
               />
-              <!--                            <div class="round">-->
-              <!--                              <input type="checkbox" id="checkbox" />-->
-              <!--                              <label for="checkbox"></label>-->
-              <!--                            </div>-->
-              <!--                            <span class="box-text">583/585</span>-->
-              <!--                            <div class="ml-3 round">-->
-              <!--                              <input type="checkbox" id="checkbox1" />-->
-              <!--                              <label for="checkbox1"></label>-->
-              <!--                            </div>-->
-              <!--                            <span class="box-text">750</span>-->
+            </div>
+            <div class="col-sm-4 mx-2 my-2 my-md-0 pb-3 compute-boxes">
+              <p class="mb-2">Срок (5 - 60 дней)</p>
+              <input
+                v-mask="'##'"
+                class="ml-3 dotted-input"
+                v-model="term"
+                @change="termCheck"
+              />
+              <span v-if="warnErr === 'max'" class="warn_text"
+                >Максимальный срок 60 дней</span
+              >
+              <span v-if="warnErr === 'min'" class="warn_text"
+                >Минимальный срок 5 дней</span
+              >
             </div>
           </div>
-          <div class="mx-auto compute-boxes mt-lg-0 mt-3">
-            <p class="mb-2">Вес изделия, гр</p>
-            <input
-              v-mask="'######'"
-              class="ml-3 dotted-input"
-              v-model="weight"
-            />
-          </div>
-          <div class="mr-lg-2 compute-boxes mt-lg-0 mt-3">
-            <p class="mb-2">Срок (5 - 60 дней)</p>
-            <input
-              v-mask="'##'"
-              class="ml-3 dotted-input"
-              v-model="term"
-              @change="termCheck"
-            />
-            <span v-if="warnErr === 'max'" class="warn_text"
-              >Максимальный срок 60 дней</span
-            >
-            <span v-if="warnErr === 'min'" class="warn_text"
-              >Минимальный срок 5 дней</span
-            >
-          </div>
         </div>
-        <div class="sum mx-auto mt-4">
+        <div class="col-sm-12 sum mx-auto mt-4 justify-content-center flex-column flex-md-row">
           <div class="sums sums-border">
             <p>Сумма на руки</p>
             <h2>{{ amount.toLocaleString("ru") }} &#8376;</h2>
           </div>
           <div class="sums no-border">
-            <p>Сумма к возврату</p>
+            <p>Сумма к воврату</p>
             <h2>{{ returnedAmount.toLocaleString("ru") }} &#8376;</h2>
           </div>
         </div>
-        <p class="mx-auto mt-4 text-compute">
+        <p class="col-sm-12 mx-auto mt-4 text-compute">
           Для более точного определения пробы и веса изделия, а так же стоимости
           займа, пожалуйста, посетите наш ближайший филиал.
         </p>
@@ -172,20 +174,16 @@ export default {
 <style scoped lang="scss">
 #compute {
   background-color: #f1f2f6;
-  height: 858px;
+  padding-bottom: 100px;
   .compute-box {
-    width: 858px;
     h1 {
       text-transform: uppercase;
       font-size: 54px;
-      width: 720px;
-      margin-top: 100px;
       font-weight: bold;
+      padding-top: 60px;
     }
-    .container {
-      width: 860px;
+    .row {
       background-color: #fff;
-      height: 335px;
       border-radius: 11px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       .comp {
@@ -193,8 +191,9 @@ export default {
         .compute-boxes {
           background-color: #f1f2f6;
           border-radius: 9px;
-          height: 100px;
-          width: 240px;
+          display: flex;
+          flex-wrap: wrap;
+          max-width: 280px;
           & .warn_text {
             color: #e51b56;
             padding-left: 17px;
@@ -207,6 +206,7 @@ export default {
           }
           .box-inside {
             display: flex;
+            flex-wrap: wrap;
             .round {
               position: relative;
             }
@@ -276,15 +276,10 @@ export default {
             font-weight: bold;
           }
         }
-        .gold {
-          width: 276px;
-        }
       }
       .sum {
         display: flex;
-        height: 62px;
         .sums {
-          width: 429px;
           p {
             font-size: 20px;
             color: #2b2a29;
@@ -300,20 +295,10 @@ export default {
         }
         .sums-border {
           border-right: 2px dashed #000;
-          p,
-          h2 {
-            padding-left: 100px;
-          }
-        }
-        .no-border {
-          p,
-          h2 {
-            padding-right: 100px;
-          }
+
         }
       }
       .text-compute {
-        width: 714px;
         color: #9b9b9b;
         font-size: 20px;
       }
@@ -325,29 +310,34 @@ export default {
       border-radius: 11px;
       color: #fff;
       font-size: 24px;
-      height: 64px;
     }
   }
 }
-@media only screen and (max-width: 700px) {
+@media (max-width: 700px) {
   #compute {
     h1 {
-      margin-top: 50px !important;
       font-size: 30px !important;
     }
     .compute-box {
       width: 100%;
+      h1 {
+        padding-bottom: 30px;
+        padding-top: 30px;
+      }
       .container {
         width: 90%;
-        height: 600px;
         .comp {
           display: block;
           .compute-boxes {
             margin: auto;
-            width: 276px;
           }
         }
+        .sum {
+          display: flex;
+          flex-direction: column;
+        }
         .sums {
+
           p {
             font-size: 15px !important;
             padding-left: 0px !important;
@@ -357,6 +347,7 @@ export default {
             padding-left: 0px !important;
           }
         }
+
         .no-border {
           p {
             padding-right: 0px !important;
@@ -371,10 +362,42 @@ export default {
         }
       }
       button {
-        height: 50px;
         font-size: 20px;
       }
     }
+  }
+  .sums-border {
+    border-right: none !important;
+    border-bottom: 2px dashed #000;;
+  }
+}
+
+@media (min-width: 768px) {
+  .sums-border {
+    margin-right: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 600px) {
+  .compute-boxes {
+    max-width: 220px !important;
+  }
+  #compute .compute-box .row .comp .compute-boxes .dotted-input {
+    width: 180px;
+
+    .gold {
+      text-align: center !important;
+      justify-content: center !important;
+      padding-left: 0 !important;
+    }
+  }
+  .logo {
+    max-width: 100%;
+  }
+  #wr-calc {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 </style>
