@@ -9,8 +9,14 @@ module.exports = (sequelize, Sequelize) => {
         avatar: {
             type: Sequelize.STRING,
         },
+        cityId: {
+            type: Sequelize.INTEGER
+        },
+        project: {
+            type: Sequelize.STRING
+        },
         isPublic: {
             type: Sequelize.BOOLEAN,
-        }
+        },
     });
 }

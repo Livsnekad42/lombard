@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS comments (
     username VARCHAR(200),
     content VARCHAR(500),
     avatar VARCHAR(500),
+    cityId NUMERIC(2,1),
+    project VARCHAR(500),
     "isPublic" BOOLEAN,
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL

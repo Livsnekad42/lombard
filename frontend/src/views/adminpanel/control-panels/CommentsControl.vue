@@ -10,6 +10,8 @@
             <th scope="col">Имя</th>
             <th scope="col">Содержание</th>
             <th scope="col">Аватар URL</th>
+            <th scope="col">Проект</th>
+            <th scope="col">Город</th>
             <th></th>
           </tr>
           </thead>
@@ -19,6 +21,8 @@
             <td>{{ comment.username }}</td>
             <td>{{ comment.content }}</td>
             <td>{{ comment.avatar }}</td>
+            <td>{{ comment.project }}</td>
+            <td>{{ comment.cityId }}</td>
             <td><button @click="delComment(comment, $event)" type="button" class="btn btn-danger">удалить</button></td>
           </tr>
           </tbody>
@@ -45,6 +49,26 @@
         <label for="user_avatar">Аватар</label>
         <input v-model="comment.avatar" type="text" class="form-control" id="user_avatar" placeholder="URL аватара ...">
       </div>
+      <div class="form-group">
+        <label for="user_project">Аватар</label>
+        <input v-model="comment.project" type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
+      </div>
+      <div class="form-group">
+        <label for="user_city">Город</label>
+       <select
+           id="user_city"
+           v-model="comment.cityId"
+           class="custom-select"
+       >
+         <option
+             v-for="city in citiesList"
+             selected
+             :key="city.cityName"
+             :value="city.Id"
+         >{{ city.cityName }}</option
+         >
+       </select>
+      </div>
       <div class="form-group check__control">
         <label for="comment_public">Опубликовать</label>
         <input v-model="comment.isPublic" type="checkbox" id="comment_public">
@@ -62,18 +86,24 @@
 
 <script>
 import UpdateComment from "./modals/updateComment";
+import {
+  getAllCities
+} from "../../../app/api-admin";
 import router from "@/router";
 export default {
   name: "CommentsControl",
   data() {
     return {
+      citiesList: [],
       errorMessage: "",
       commentList: [],
       comment: {
         username: "",
         content: "",
         avatar: "",
-        isPublic: true
+        isPublic: true,
+        cityId: 0, // number
+        project: ""
       },
       commentEdit: null,
       editShow: false,
@@ -89,6 +119,7 @@ export default {
     UpdateComment
   },
   created() {
+    this.getAllCity();
     this.$store.dispatch("getListComment")
         .then(response => {
           if ( response.data ) {
@@ -101,6 +132,11 @@ export default {
         });
   },
   methods: {
+    getAllCity() {
+      getAllCities().then(cities => {
+        this.citiesList = cities.data;
+      });
+    },
     delComment(comment, event) {
       event.stopPropagation();
       const index = this.commentList.findIndex(_comment => _comment.id === comment.id);
@@ -125,11 +161,13 @@ export default {
       this.$store.dispatch("addComment", this.comment)
           .then(resp => {
             if ( resp.data && resp.data.comment ) {
+              console.log(resp);
               this.commentList.push(resp.data.comment);
             }
             this.comment.username = "";
             this.comment.content = "";
             this.comment.avatar = "";
+            this.comment.project = "",
             this.comment.isPublic = true;
           })
           .catch(err => {
@@ -144,6 +182,10 @@ export default {
       }
       if ( this.comment.content === "" ) {
         this.errorBind("Введите комментарий");
+        return false;
+      }
+      if ( this.comment.project === "" ) {
+        this.errorBind("Введите название проекта");
         return false;
       }
       return true;

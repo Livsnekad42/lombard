@@ -34,7 +34,7 @@
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
-        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf']" v-on:files="submitFiles" />
+        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf', 'jpg']" v-on:files="submitFiles" />
       </div>
       <div class="_submit-block">
         <button @click="save()" type="button" class="btn btn-primary">Сохранить</button>
