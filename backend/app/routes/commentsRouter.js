@@ -20,7 +20,7 @@ router.get("/commentList", (req, res) => {
 
 router.post("/create-comment", (req, res) => {
     const data = req.body;
-    if ( !data.username || !data.content ) {
+    if ( !data.username || !data.content || !data.content || !data.project || !data.cityId ) {
         res.status(400).json({err: true, text: "Не заполнены обязательные поля.", code: errorsCode.no_valid});
         return;
     }

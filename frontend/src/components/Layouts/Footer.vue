@@ -1,7 +1,7 @@
 <template>
   <footer class="page-footer pt-4">
     <div class="container-fluid text-center text-md-left mt-4">
-      <div class="row">
+      <div class="row" id="footer-wrap">
         <div class="col-md-4 mt-md-0 mt-3 ml-auto">
           <img src="@/assets/images/Group5Copy.png" class="logo" />
           <p class="mt-5">© 2020 TEZ LOMBARD</p>
@@ -67,6 +67,11 @@ footer {
       width: 150px;
       // height: 100%;
     }
+  }
+}
+@media (max-width: 1000px) and (min-width: 600px) {
+  #footer-wrap {
+    align-items: flex-end;
   }
 }
 </style>
