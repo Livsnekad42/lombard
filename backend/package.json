@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "start-dev": "nodejs --tls-min-v1.0 server.js"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +30,5 @@
     "sequelize": "^6.3.4",
     "soap": "^0.31.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

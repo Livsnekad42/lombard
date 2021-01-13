@@ -64,6 +64,7 @@ router.post("/createComment", (req, res) => {
         });
         return;
     }
+    data.isPublic = false;
     addComment(data)
         .then(comment => {
             res.status(200).json({ comment });

@@ -16,6 +16,9 @@ const publicRouter = require("./app/routes/publicRouter");
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
 
+// node > 11.0
+require('tls').DEFAULT_MIN_VERSION = 'TLSv1'
+
 // Устанавливаем копоративный токен при запуске сервера
 const redisApi = new RedisApi();
 redisApi._init();
