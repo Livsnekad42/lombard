@@ -8,6 +8,7 @@ import loader from "./modules/loader";
 import loanCalc from "./modules/loanCalc";
 import documents from "./modules/documentLoad";
 import comments from "./modules/comments";
+import settings from "./modules/commonSettings";
 
 import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
 
