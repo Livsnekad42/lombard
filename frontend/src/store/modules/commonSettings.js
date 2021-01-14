@@ -10,21 +10,16 @@ export default {
             context.commit('setProlongationStatus', status);
         },
         saveSettings(ctx, data) {
-            axios.post('https://json.com', {
-                method: "POST",
-                body: {
-                    datta: data
-                }
-            })
+            ctx.commit('setProlongationStatus', data);
         }
     },
     mutations: {
         setProlongationStatus(state, status) {
-            state.prolongationStatus = status.completed;
+            state.prolongationStatus = status;
         },
     },
     state: {
-        prolongationStatus: "",
+        prolongationStatus: true,
         prolongationMessage: ""
     },
     getters: {

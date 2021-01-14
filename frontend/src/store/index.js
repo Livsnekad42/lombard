@@ -9,7 +9,6 @@ import loanCalc from "./modules/loanCalc";
 import documents from "./modules/documentLoad";
 import comments from "./modules/comments";
 import settings from "./modules/commonSettings";
-import percent from "./modules/percent";
 
 import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
 import axios from "axios";
@@ -138,7 +137,6 @@ export default new Vuex.Store({
     requestAdmin,
     documents,
     comments,
-    settings,
-    percent
+    settings
   }
 });
