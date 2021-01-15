@@ -20,7 +20,7 @@ exports.updateSettingValue = async (data) => {
     const description = data.description;
     const enable = data.enable || false;
     try {
-        return await Comments.update({value, description, enable}, {
+        return await Settings.update({value, description, enable}, {
             where: { fieldName: data.fieldName },
             returning: true,
         });
@@ -29,9 +29,11 @@ exports.updateSettingValue = async (data) => {
     }
 }
 
-exports.getSettingsApp = async () => {
+exports.getSettingsApp = async (isPublic = true) => {
     try {
-        return await Settings.findAll({});
+        const filter = {};
+        if ( isPublic ) filter.where = {isPublic};
+        return await Settings.findAll(filter);
     } catch (e) {
         return e;
     }

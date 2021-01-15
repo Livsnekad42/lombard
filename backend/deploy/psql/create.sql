@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS settingapps (
     value VARCHAR(500) NULL,
     system BOOLEAN DEFAULT False,
     enable BOOLEAN DEFAULT True,
+    "isPublic" BOOLEAN DEFAULT True,
     "createdAt" timestamp with time zone NULL,
     "updatedAt" timestamp with time zone NULL
 );

@@ -33,8 +33,8 @@ router.post("/create-content", (req, res) => {
         return;
     }
     addContent(data)
-        .then(setting => {
-            res.status(200).json({ setting });
+        .then(content => {
+            res.status(200).json({ content });
         })
         .catch((err) => {
             res.status(400).json(err)
@@ -45,19 +45,19 @@ router.post("/edit-content", (req, res) => {
     const data = req.body;
 
     updateContentValue(data)
-        .then(setting => {
-            res.status(200).json({ setting: setting[1][0] });
+        .then(content => {
+            res.status(200).json({ content: content[1][0] });
         })
         .catch((err) => {
             res.status(400).json(err)
         });
 });
 
-router.post("/destroy-setting", (req, res) => {
+router.post("/destroy-content", (req, res) => {
     const data = req.body;
     destroyContent(data.id)
         .then(() => {
-            res.status(200).json({ test: "Настройка успешно удалена." });
+            res.status(200).json({ response: true, test: "Контент успешно удален." });
         })
         .catch((err) => {
             res.status(400).json(err)

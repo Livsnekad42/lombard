@@ -4,6 +4,27 @@ const loanService = require("../services/loanService");
 const soapRequest = require("../config/soap");
 const errorsCode = require("../../app/config/_error_type");
 const settingAppController = require("../controllers/settingApp.controller");
+const contents = require("../controllers/content.controller");
+
+router.post("/isProlongation", function (req, res) {
+    settingAppController.getSettingsFromFieldName("prolongationState")
+        .then(prolongationState => {
+            if ( !prolongationState.enable ) {
+                contents.getContentItem("prolongationState_disabled")
+                    .then(contentComponent => {
+                        res.status(200).json({prolongationState: false, content: contentComponent});
+                    })
+                    .catch(err => {
+                        res.status(200).json({prolongationState: false});
+                    });
+            } else {
+                res.status(200).json({prolongationState: true});
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        });
+});
 
 router.post("/getCurrentLoan", function (req, res) {
   loanService

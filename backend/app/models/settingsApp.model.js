@@ -19,6 +19,10 @@ module.exports = (sequelize, Sequelize) => {
         enable: {
             type: Sequelize.BOOLEAN,
             defaultValue: true
+        },
+        isPublic: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: true
         }
     });
 }
