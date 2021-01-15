@@ -12,7 +12,10 @@ const loanRouter = require("./app/routes/loanRouter");
 const mapRouter = require("./app/routes/mapRouter");
 const documentRouter = require("./app/routes/documentRouter");
 const commentsRouter = require("./app/routes/commentsRouter");
+const settingsRouter = require("./app/routes/stateAppRouter");
+const contentRouter = require("./app/routes/contentRouter");
 const publicRouter = require("./app/routes/publicRouter");
+
 const settings = require("./app/config/_setings");
 const errorsCode = require("./app/config/_error_type");
 
@@ -122,6 +125,8 @@ app.use("/api/loan", loanRouter);
 app.use("/api/map", mapRouter);
 app.use("/api/media", documentRouter);
 app.use("/api/comments", commentsRouter);
+app.use("/api/settings", settingsRouter);
+app.use("/api/content", contentRouter);
 app.use("/api/public", publicRouter);
 
 const db = require("./app/config/db_config.js");
@@ -145,3 +150,5 @@ const server = app.listen(4040, function () {
   console.log("App listening at http://%s:%s", host, port);
   console.log("Server created", host, port);
 });
+
+module.exports.app = app;
