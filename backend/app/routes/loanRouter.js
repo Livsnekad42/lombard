@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const loanService = require("../services/loanService");
 const soapRequest = require("../config/soap");
+const errorsCode = require("../../app/config/_error_type");
+const settingAppController = require("../controllers/settingApp.controller");
 
 router.post("/getCurrentLoan", function (req, res) {
   loanService
@@ -16,14 +18,27 @@ router.post("/getCurrentLoan", function (req, res) {
 });
 
 router.post("/currentOverdraftSmsCode", function (req, res) {
-  loanService
-    .currentOverdraftSmsCode({
-      ...req.body,
-      ...{ token: req.tokenElombard },
-    })
-    .then((loan) => {
-      res.status(200).json(loan.data);
-    })
+  // TODO: получить значение prolongationState
+  settingAppController.getSettingsFromFieldName("prolongationState")
+    .then(prolongationState => {
+      if ( !prolongationState.enable ) {
+        res.status(400).json({
+          code: errorsCode.no_permission,
+          errors: errors,
+          text: "Пролонгация отключена"
+        });
+        return;
+      }
+      loanService
+        .currentOverdraftSmsCode({
+          ...req.body,
+          ...{ token: req.tokenElombard },
+        })
+        .then((loan) => {
+          res.status(200).json(loan.data);
+        })
+        .catch((err) => res.status(500).json(err));
+      })
     .catch((err) => res.status(500).json(err));
 });
 
