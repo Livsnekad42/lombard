@@ -26,6 +26,8 @@ db.cityLoc = require('../models/city_location.model.js')(sequelize, Sequelize);
 db.users = require('../models/user.model.js')(sequelize, Sequelize);
 db.documents = require('../models/document.model.js')(sequelize, Sequelize);
 db.comments = require('../models/comment.model.js')(sequelize, Sequelize);
+db.settingsApp = require('../models/settingsApp.model.js')(sequelize, Sequelize);
+db.contents = require('../models/content.model.js')(sequelize, Sequelize);
 
 db.cityLoc.hasMany(db.affiliateLoc, {
     foreignKey: 'cityId'
