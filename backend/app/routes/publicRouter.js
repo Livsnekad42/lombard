@@ -7,24 +7,12 @@ const {
     addComment,
     getPublicCommentList,
 } = require("../controllers/comment.controller");
+const { getSettingsApp } = require("../controllers/settingApp.controller");
+const { getContentsAll } = require("../controllers/content.controller");
 const { loanCalculate } = require("../../app/requests/loan");
 const errorsCode = require("../../app/config/_error_type");
+const Validator = require("../validators/validators");
 
-const validators = (data, requiredFieldList) => {
-    /**
-     *
-     * @param data: Object
-     * @returns {[boolean, string]}
-     */
-
-    for ( const field of requiredFieldList ) {
-        if ( !data[field] ) {
-            return [false, field];
-        }
-
-    }
-    return [true, null];
-}
 
 // Comments
 router.get("/comments", (req, res) => {
@@ -36,12 +24,30 @@ router.get("/comments", (req, res) => {
 });
 
 router.post("/createComment", (req, res) => {
-    const requiredFields = [
-        "username",
-        "content",
-        "project",
-        "cityId",
+    const validFields = [
+        {
+            field: "username", 
+            required: true, 
+            type: "string", 
+        },
+        {
+            field: "content", 
+            required: true, 
+            type: "string", 
+        },
+        {
+            field: "project", 
+            required: true, 
+            type: "string", 
+        },
+        {
+            field: "cityId", 
+            required: true, 
+            type: "number", 
+        }
     ];
+
+    const validator = new Validator(validFields);
     /*
     * @param data: {
     *       username: string;
@@ -54,14 +60,7 @@ router.post("/createComment", (req, res) => {
     * @returns {undefined}
     * */
     const data = req.body;
-    const [isValid, field] = validators(data, requiredFields);
-    if ( !isValid ) {
-        res.status(400).json({
-            err: true,
-            text: "Не заполнены обязательные поля.",
-            code: errorsCode.no_valid,
-            fields: [field],
-        });
+    if ( !validator.call(res, data) ) {
         return;
     }
     data.isPublic = false;
@@ -93,20 +92,24 @@ router.post("/calculate", (req, res) => {
      * }
      * @returns {undefined}
      */
-    const requiredFields = [
-        "creditSum",
-        "creditPeriod",
+
+    const validFields = [
+        {
+            field: "creditSum", 
+            required: true, 
+            validFunc: (val) => {return +val >= 10}, 
+        },
+        {
+            field: "creditPeriod", 
+            required: true, 
+            validFunc: (val) => {return +val > 0}, 
+        }
     ];
 
+    const validator = new Validator(validFields);
+
     const data = req.body;
-    const [isValid, field] = validators(data, requiredFields);
-    if ( !isValid ) {
-        res.status(400).json({
-            err: true,
-            text: "Не заполнены обязательные поля.",
-            code: errorsCode.no_valid,
-            fields: [field],
-        });
+    if ( !validator.call(res, data) ) {
         return;
     }
 
@@ -116,6 +119,23 @@ router.post("/calculate", (req, res) => {
     loanCalculate(data)
         .then((resp) => {
             res.status(200).json(resp.data);
+        })
+        .catch((err) => res.status(400).json(err));
+});
+
+// settings
+router.get("/settings", (req, res) => {
+    getSettingsApp()
+        .then((settingsList) => {
+            res.status(200).json(settingsList);
+        })
+        .catch((err) => res.status(400).json(err));
+});
+
+router.get("/contents-app", (req, res) => {
+    getContentsAll()
+        .then((settingsList) => {
+            res.status(200).json(settingsList);
         })
         .catch((err) => res.status(400).json(err));
 });
