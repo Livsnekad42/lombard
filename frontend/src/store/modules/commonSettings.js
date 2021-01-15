@@ -1,20 +1,30 @@
-import { saveSettings } from "../../app/api-admin";
-
-const actions = {
-    saveSettings({getters}, data) {
-        return new Promise((resolve, reject) => {
-            saveSettings(data)
-                .then(res => {
-                    if (res.data.err) reject(res);
-                    resolve(res);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    },
-}
+import { saveSettings} from "@/app/api-admin";
+import axios from "axios";
 
 export default {
-    actions
-};
+    actions: {
+        async getProlongationStatus(context) {
+            const res = await fetch('https://jsonplaceholder.typicode.com/todos/4');
+            const status = await res.json()
+
+            context.commit('setProlongationStatus', status);
+        },
+        saveSettings(ctx, data) {
+            ctx.commit('setProlongationStatus', data);
+        }
+    },
+    mutations: {
+        setProlongationStatus(state, status) {
+            state.prolongationStatus = status;
+        },
+    },
+    state: {
+        prolongationStatus: true,
+        prolongationMessage: ""
+    },
+    getters: {
+        getProlongationStatus(state) {
+            return state.prolongationStatus;
+        }
+    }
+}

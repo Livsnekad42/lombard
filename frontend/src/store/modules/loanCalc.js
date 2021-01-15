@@ -1,7 +1,7 @@
 import CalculateService from "../../app/services/CalculateService";
-import { percentLoanCalc, goldProbes } from "../../_config";
+import { goldProbes } from "../../_config";
 
-const CALCULATE = new CalculateService(percentLoanCalc);
+
 
 const state = {
   goldProbeArray: goldProbes,
@@ -10,15 +10,20 @@ const state = {
   term: "5",
   amount: "",
   returnedAmount: "",
+  percentLoanCalc : 0.2,
   probePrice: {
     "585": 10500,
     "750": 13461
   }
 };
+const CALCULATE = new CalculateService(state.percentLoanCalc);
 
 const getters = {
   getCalcBase: state => name => state[name],
-  getCalcProbePrice: state => name => state.probePrice[name]
+  getCalcProbePrice: state => name => state.probePrice[name],
+  getPercentLoanCalc(state) {
+    return state.percentLoanCalc;
+  }
 };
 
 const mutations = {
@@ -27,7 +32,10 @@ const mutations = {
   },
   setCalcProbePrice(state, { type, data }) {
     state.probePrice[type] = data;
-  }
+  },
+  setPercentLoanCalc(state, percent) {
+    state.percentLoanCalc = percent;
+  },
 };
 
 const actions = {
