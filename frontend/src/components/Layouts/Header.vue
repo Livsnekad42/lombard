@@ -2,7 +2,7 @@
   <header>
     <nav class="row align-items-center">
       <div class="col-sm-4 col-12 my-4 d-flex justify-content-center align-items-center">
-        <a class="logo" href="#">
+        <a class="logo" href="/">
           <img src="@/assets/images/Group5Copy.png" class="logo" />
         </a>
       </div>

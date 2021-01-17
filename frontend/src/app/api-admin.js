@@ -105,3 +105,10 @@ export function setHeaderAuthorization(token) {
 export function removeHeaderAuthorization() {
     delete http.defaults.headers.common["Authorization"];
 };
+
+export const createSettings = async data =>
+    await http.post("/settings/create-setting", data);
+
+
+export const getSettings = async data =>
+    await http.post("/settings/settings");

@@ -7,6 +7,7 @@ import MapControl from "../views/adminpanel/control-panels/MapControl";
 import DocumentControl from "../views/adminpanel/control-panels/DocumentControl";
 import CommentControl from "../views/adminpanel/control-panels/CommentsControl";
 import store from "../store";
+import SettingsContol from "@/views/adminpanel/control-panels/SettingsContol";
 
 const ifNotAuth = (to, from, next) => {
   if ( !store.getters.isLoggedIn ) {
@@ -65,6 +66,15 @@ const routes = [
         path: "/admin-panel/comments",
         name: "comments",
         component: CommentControl,
+        beforeEnter: ifAuth,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: "/admin-panel/settings",
+        name: "settings",
+        component: SettingsContol,
         beforeEnter: ifAuth,
         meta: {
           requiresAuth: true
