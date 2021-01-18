@@ -24,7 +24,7 @@ router.post("/add-city-location", (req, res) => {
 router.post("/edit-city-location", (req, res) => {
   editCityLocation(req.body)
     .then((city) => {
-      const text = `${city[1][0].cityName} успешно изминен`;
+      const text = `${city[1][0].cityName} успешно изменен`;
       res.status(200).json({ city: city[1][0], text });
     })
     .catch((err) => {
@@ -53,7 +53,7 @@ router.post("/add-affiliate-location", (req, res) => {
 router.post("/edit-affiliate-location", (req, res) => {
   editAffiliateLocation(req.body)
     .then((affiliate) => {
-        const text = `${affiliate[1][0].affiliateName} успешно изминен`;
+        const text = `${affiliate[1][0].affiliateName} успешно изменен`;
         res.status(200).json({ affiliate: affiliate[1][0], text });
     })
     .catch((err) => res.status(400).json(err));

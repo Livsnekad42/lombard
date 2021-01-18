@@ -1,20 +1,40 @@
-import { saveSettings} from "@/app/api-admin";
+import {createSettings, getListComment, getSettings} from "@/app/api-admin";
 import axios from "axios";
 
 export default {
     actions: {
-        async getProlongationStatus(context) {
-            const res = await fetch('https://jsonplaceholder.typicode.com/todos/4');
-            const status = await res.json()
+        async changeProlongationStatus(context, data) {
+            const res = await fetch('http://test.tezlombard.kz/api/settings/settings', {
+                method: "POST"
+            });
+            const result = await res.json();
+            console.log(result);
 
-            context.commit('setProlongationStatus', status);
+            context.commit('toggleProlongationStatus', data);
         },
         saveSettings(ctx, data) {
             ctx.commit('setProlongationStatus', data);
+        },
+        createSetting(context, setting) {
+            createSettings(setting);
+        },
+        getSetting(context, setting) {
+            return new Promise((resolve, reject) => {
+                getSettings()
+                    .then(res => {
+                        if (res.data.err) reject(res);
+                        resolve(res);
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        reject(err);
+                        console.log(err);
+                    });
+            });
         }
     },
     mutations: {
-        setProlongationStatus(state, status) {
+        toggleProlongationStatus(state, status) {
             state.prolongationStatus = status;
         },
     },

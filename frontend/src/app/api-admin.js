@@ -106,6 +106,9 @@ export function removeHeaderAuthorization() {
     delete http.defaults.headers.common["Authorization"];
 };
 
-export const saveSettings = async data =>
-    await http.post("https://jsonplaceholder.com", data);
+export const createSettings = async data =>
+    await http.post("/settings/create-setting", data);
 
+
+export const getSettings = async data =>
+    await http.post("/settings/settings");

@@ -6,14 +6,22 @@
         <table class="table table-striped table-hover">
           <thead>
           <tr>
-            <th scope="col">Статус пролонгации</th>
-            <th scope="col">Сообщение пролонгации</th>
+            <th scope="col">Название параметра</th>
+            <th scope="col">Значение параметра</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr class="row__comment">
-            <td><input type="checkbox" v-model="prolongationState"></td>
+          <tr class="row__comment" v-for="setting of foo" v-bind:key="setting.id">
+            <td >
+              {{setting.description}}
+            </td>
+            <td >
+              {{setting.value}}
+            </td>
+            <td v-if="!setting.system">
+            <button @click="delComment(setting.id, $event)" type="button" class="btn btn-danger">удалить</button><
+            </td>
           </tr>
           </tbody>
         </table>
@@ -21,9 +29,10 @@
     </div>
     <div class="col-4">
       <h4>Изменение настроек</h4>
+      <p>{{foo}}</p>
       <div class="form-group">
         <label for="prolongationStatus">Статус пролонгации</label>
-        <input type="checkbox" class="form-control" id="prolongationStatus" v-model="prolongationState">
+        <input type="checkbox" class="form-control" id="prolongationStatus" v-model="settings.settingState">
       </div>
       <div class="form-group">
         <label for="comment_content">Комментарий</label>
@@ -58,7 +67,9 @@ export default {
   name: "SettingsControl",
   data() {
     return {
+      foo: '',
       settings: {
+        settingState: false,
         prolongationStatus: false,
         bla: 345
       }
@@ -90,14 +101,36 @@ export default {
     this.$store.dispatch('saveSettings', true)
   },
   mounted() {
-    this.$store.dispatch("getProlongationStatus");
+    this.$store.dispatch('getSetting')
+        .then(response => {
+          if ( response.data ) {
+            this.foo = response.data;
+          }
+        })
+        .catch(err => {
+          this.$store.dispatch("toaster", {type: "error", message: "Чё-т не"});
+          console.log("Err: ", err);
+        });
   },
   methods: {
-    save() {
-      return this.$store.dispatch('saveSettings', false)
+   /* save() {
+      this.$store.dispatch('changeProlongationStatus', this.settings.settingState)
     }
 
+    save() {
+      this.$store.dispatch('createSetting', {
+        fieldName: 'testSetting',
+        description: 'my test setting',
+        value: 'foobar',
+        enable: true,
+        isPublic: false
+      })
+    },
 
+    */
+    save() {
+
+    }
   }
 }
 </script>
