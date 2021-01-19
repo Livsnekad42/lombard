@@ -44,7 +44,7 @@
       <h4>Изменение настроек</h4>
       <div class="form-group">
         <label for="processingPercent">{{percentProcessingDescr}}</label>
-        <input type="number" class="form-control" id="processingPercent" v-model="percentProcessing" step="0.05">
+        <input type="number" class="form-control" id="processingPercent" v-model="percentProcessing" step="0.05" min="0.05" max="10">
         <button type="button" class="btn btn-primary" @click="setPercent(fieldNames['percent'], percentProcessing)">Задать</button>
       </div>
       <div class="form-group">

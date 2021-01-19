@@ -15,7 +15,7 @@
           <tbody>
             <tr v-for="(document, index) in documents" v-bind:key="index">
               <td>{{ document.title }}</td>
-              <td>{{ document.url }}</td>
+              <td><a target="_blank" v-bind:href="'http://test.tezlombard.kz'+document.url">{{document.url}}</a></td>
               <td>{{ document.createdAt | formatDate }}</td>
               <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
             </tr>
