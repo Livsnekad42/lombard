@@ -12,15 +12,28 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="row__comment" v-for="setting of foo" v-bind:key="setting.id">
+          <tr class="row__comment" >
             <td >
-              {{setting.description}}
+              {{percentProcessingDescr}}
             </td>
             <td >
-              {{setting.value}}
+              {{percentValue}}
             </td>
-            <td v-if="!setting.system">
-            <button @click="delComment(setting.id, $event)" type="button" class="btn btn-danger">удалить</button><
+          </tr>
+          <tr class="row__comment" >
+            <td >
+              {{gold585PriceDescr}}
+            </td>
+            <td >
+              {{get585}}
+            </td>
+          </tr>
+          <tr class="row__comment" >
+            <td >
+              {{gold750PriceDescr}}
+            </td>
+            <td >
+              {{get750}}
             </td>
           </tr>
           </tbody>
@@ -29,34 +42,22 @@
     </div>
     <div class="col-4">
       <h4>Изменение настроек</h4>
-      <p>{{foo}}</p>
       <div class="form-group">
-        <label for="prolongationStatus">Статус пролонгации</label>
-        <input type="checkbox" class="form-control" id="prolongationStatus" v-model="settings.settingState">
-      </div>
-      <div class="form-group">
-        <label for="comment_content">Комментарий</label>
-        <textarea  type="text" class="form-control" id="comment_content" placeholder="Комментарий ...">
-        </textarea>
-        <small class="form-text text-muted commentHelp">*обязательное поле.</small>
+        <label for="processingPercent">{{percentProcessingDescr}}</label>
+        <input type="number" class="form-control" id="processingPercent" v-model="percentProcessing" step="0.05">
+        <button type="button" class="btn btn-primary" @click="setPercent(fieldNames['percent'], percentProcessing)">Задать</button>
       </div>
       <div class="form-group">
-        <label for="user_avatar">Аватар</label>
-        <input type="text" class="form-control" id="user_avatar" placeholder="URL аватара ...">
+        <label for="gold585">{{gold585PriceDescr}}</label>
+        <input  type="number" class="form-control" id="gold585" placeholder="Стоимость 585 пробы" v-model="gold585Price">
+        <button type="button" class="btn btn-primary" @click="setGold585(fieldNames['585'], gold585Price)">Задать</button>
       </div>
       <div class="form-group">
-        <label for="user_project">Аватар</label>
-        <input type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
-      </div>
-
-      <div class="form-group check__control">
-        <label for="comment_public">Опубликовать</label>
-        <input type="checkbox" id="comment_public">
-      </div>
-      <div class="_submit-block">
-        <button type="button" class="btn btn-primary" @click="save()">Сохранить</button>
-      </div>
+        <label for="gold750">{{gold750PriceDescr}}</label>
+        <input  type="number" class="form-control" id="gold750" placeholder="Стоимость 750 пробы" v-model="gold750Price">
+        <button type="button" class="btn btn-primary" @click="setGold750(fieldNames['750'], gold750Price)">Задать</button>
     </div>
+  </div>
   </div>
 </template>
 <script>
@@ -67,70 +68,61 @@ export default {
   name: "SettingsControl",
   data() {
     return {
-      foo: '',
-      settings: {
-        settingState: false,
-        prolongationStatus: false,
-        bla: 345
-      }
+      percentProcessing: '',
+      gold585Price: '',
+      gold750Price: '',
+      percentProcessingDescr: '',
+      gold585PriceDescr: '',
+      gold750PriceDescr: '',
+      fieldNames: {}
     }
   },
   computed: {
-
-    prolongationState() {
-      return this.$store.getters.getProlongationStatus;
-    },
-    getGold585Price() {
-      return this.$store.getters.getCalcProbePrice("585")
-    },
-    getGold750Price() {
-      return this.$store.getters.getCalcProbePrice("750")
-    },
-    getPercent() {
+    percentValue() {
       return this.$store.getters.getPercentLoanCalc;
     },
+    get585() {
+      return this.$store.getters.get585Price;
+    },
+    get750() {
+      return this.$store.getters.get750Price;
+    }
   },
+
   created() {
 
-    /*
-    axios.get('https://jsonplaceholder.typicode.com/todos/4').then(response => this.settings.prolongationStatus = response.data);
-    axios.get('https://jsonplaceholder.typicode.com/posts/4').then(response => this.settings.prolongationMessage = response.data);
-    */
   },
   updated() {
-    this.$store.dispatch('saveSettings', true)
+
   },
   mounted() {
-    this.$store.dispatch('getSetting')
+    this.$store.dispatch('getAllSetting')
         .then(response => {
           if ( response.data ) {
-            this.foo = response.data;
+            this.percentProcessingDescr = response.data.find(elem => elem.fieldName == 'processingPercent').description;
+            this.gold585PriceDescr = response.data.find(elem => elem.fieldName == 'probePrice_585').description;
+            this.gold750PriceDescr = response.data.find(elem => elem.fieldName == 'probePrice_750').description;
+            this.fieldNames['percent'] = response.data.find(elem => elem.fieldName == 'processingPercent').fieldName;
+            this.fieldNames['585'] = response.data.find(elem => elem.fieldName == 'probePrice_585').fieldName;
+            this.fieldNames['750'] = response.data.find(elem => elem.fieldName == 'probePrice_750').fieldName;
           }
         })
         .catch(err => {
-          this.$store.dispatch("toaster", {type: "error", message: "Чё-т не"});
+          this.$store.dispatch("toaster", {type: "error", message: "Чё-т не1"});
           console.log("Err: ", err);
         });
+    this.$store.dispatch('actualizeCalcPrices');
   },
   methods: {
-   /* save() {
-      this.$store.dispatch('changeProlongationStatus', this.settings.settingState)
-    }
-
-    save() {
-      this.$store.dispatch('createSetting', {
-        fieldName: 'testSetting',
-        description: 'my test setting',
-        value: 'foobar',
-        enable: true,
-        isPublic: false
-      })
+    setPercent(fieldName, val) {
+      this.$store.dispatch('setSetting', {fieldName: fieldName, value: val});
     },
-
-    */
-    save() {
-
-    }
+    setGold585(fieldName, val) {
+      this.$store.dispatch('setSetting', {fieldName: fieldName, value: val});
+    },
+    setGold750(fieldName, val) {
+      this.$store.dispatch('setSetting', {fieldName: fieldName, value: val});
+    },
   }
 }
 </script>
@@ -142,5 +134,8 @@ export default {
   & textarea {
     max-width: 500px;
   }
+}
+button {
+  margin: 10px;
 }
 </style>
