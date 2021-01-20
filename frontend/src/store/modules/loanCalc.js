@@ -67,11 +67,11 @@ const actions = {
      });
      const response585 = response.data.find(elem => elem.fieldName == 'probePrice_585').value;
      const response750 = response.data.find(elem => elem.fieldName == 'probePrice_750').value;
-     if (response585) {
-       gold585.data = response585;
+     if (response585 && !isNaN(+response585)) {
+       gold585.data = +response585;
      };
-     if (response750) {
-       gold750.data = response750;
+     if (response750 && !isNaN(+response750)) {
+       gold750.data = +response750;
      };
 
      ctx.commit('setCalcProbePrice', {type: gold585.type, data: gold585.data});
