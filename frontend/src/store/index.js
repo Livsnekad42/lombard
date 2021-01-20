@@ -8,8 +8,10 @@ import loader from "./modules/loader";
 import loanCalc from "./modules/loanCalc";
 import documents from "./modules/documentLoad";
 import comments from "./modules/comments";
+import settings from "./modules/commonSettings";
 
 import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
+import axios from "axios";
 
 const TOASTER_TIME = 4000;
 
@@ -25,7 +27,7 @@ export default new Vuex.Store({
     modalError: false,
     modalSuccess: false,
     modalWarning: false,
-    modalMessage: "",
+    modalMessage: ""
   },
   mutations: {
     auth_request(state){
@@ -115,7 +117,7 @@ export default new Vuex.Store({
         return;
       }
       commit("toaster", data);
-    },
+    }
   },
   getters : {
     isLoggedIn: state => {return !!state.user.token},
@@ -124,6 +126,7 @@ export default new Vuex.Store({
     toasterSuccess: state => state.modalSuccess,
     toasterWarning: state => state.modalWarning,
     toasterMessage: state => state.modalMessage,
+
   },
   modules: {
     modal,
@@ -133,6 +136,7 @@ export default new Vuex.Store({
     loanCalc,
     requestAdmin,
     documents,
-    comments
+    comments,
+    settings
   }
 });

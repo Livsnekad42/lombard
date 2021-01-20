@@ -10,6 +10,8 @@
             <th scope="col">Имя</th>
             <th scope="col">Содержание</th>
             <th scope="col">Аватар URL</th>
+            <th scope="col">Проект</th>
+            <th scope="col">Город</th>
             <th></th>
           </tr>
           </thead>
@@ -19,6 +21,8 @@
             <td>{{ comment.username }}</td>
             <td>{{ comment.content }}</td>
             <td>{{ comment.avatar }}</td>
+            <td>{{ comment.project }}</td>
+            <td>{{ myCities[comment.cityId] }}</td>
             <td><button @click="delComment(comment, $event)" type="button" class="btn btn-danger">удалить</button></td>
           </tr>
           </tbody>
@@ -45,6 +49,25 @@
         <label for="user_avatar">Аватар</label>
         <input v-model="comment.avatar" type="text" class="form-control" id="user_avatar" placeholder="URL аватара ...">
       </div>
+      <div class="form-group">
+        <label for="user_project">Аватар</label>
+        <input v-model="comment.project" type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
+      </div>
+      <div class="form-group">
+        <label for="user_city">Город</label>
+        <select
+            id="user_city"
+            v-model="comment.cityId"
+            class="custom-select"
+        >
+          <option
+              v-for="city in citiesList"
+              selected
+              :key="city.cityName"
+              :value="city.id"
+          >{{ city.cityName }}</option>
+        </select>
+      </div>
       <div class="form-group check__control">
         <label for="comment_public">Опубликовать</label>
         <input v-model="comment.isPublic" type="checkbox" id="comment_public">
@@ -62,20 +85,32 @@
 
 <script>
 import UpdateComment from "./modals/updateComment";
+import {
+  getAllCities
+} from "../../../app/api-admin";
 import router from "@/router";
 export default {
   name: "CommentsControl",
   data() {
     return {
+      citiesList: [],
+      myCities : {
+        1: "Нур-Султан",
+        2: "Алматы",
+        3: "Капшагай",
+        4: "Кокшетау",
+        5: "Тараз",
+        6: "Талдыкорган",
+      },
       errorMessage: "",
       commentList: [],
       comment: {
-        project: "",
         username: "",
         content: "",
         avatar: "",
-        city: null, // type Number Citi.ID
-        isPublic: true
+        isPublic: true,
+        cityId: 0, // number
+        project: ""
       },
       commentEdit: null,
       editShow: false,
@@ -91,6 +126,7 @@ export default {
     UpdateComment
   },
   created() {
+    this.getAllCity();
     this.$store.dispatch("getListComment")
         .then(response => {
           if ( response.data ) {
@@ -103,18 +139,23 @@ export default {
         });
   },
   methods: {
+    getAllCity() {
+      getAllCities().then(cities => {
+        this.citiesList = cities.data;
+      });
+    },
     delComment(comment, event) {
       event.stopPropagation();
       const index = this.commentList.findIndex(_comment => _comment.id === comment.id);
       if ( index < 0 ) return;
       this.$store.dispatch("deleteComment", comment.id)
-      .then(resp => {
-        this.commentList.splice(index, 1);
-      })
-      .catch(err => {
-        console.log("Err Del: ", err);
-        this.$store.dispatch("toaster", {type: "error", message: "Не удалось удалить комментарий! Повторите попытку позже."});
-      });
+          .then(resp => {
+            this.commentList.splice(index, 1);
+          })
+          .catch(err => {
+            console.log("Err Del: ", err);
+            this.$store.dispatch("toaster", {type: "error", message: "Не удалось удалить комментарий! Повторите попытку позже."});
+          });
     },
     editComment(comment) {
       this.commentEdit = comment;
@@ -132,7 +173,8 @@ export default {
             this.comment.username = "";
             this.comment.content = "";
             this.comment.avatar = "";
-            this.comment.isPublic = true;
+            this.comment.project = "",
+                this.comment.isPublic = true;
           })
           .catch(err => {
             console.log("*** err: ", err);
@@ -148,21 +190,25 @@ export default {
         this.errorBind("Введите комментарий");
         return false;
       }
+      if ( this.comment.project === "" ) {
+        this.errorBind("Введите название проекта");
+        return false;
+      }
       return true;
     },
     updateComment(comment) {
       this.$store.dispatch("editComment", comment)
-      .then(resp => {
-        if ( resp.data && resp.data.comment ) {
-          const index = this.commentList.findIndex(_comment => _comment.id === resp.data.comment.id);
-          if ( index < 0 ) return;
-          this.commentList[index] = resp.data.comment;
-          this.editShow = false;
-        }
-      })
-      .catch(err => {
-        this.$store.dispatch("toaster", {type: "error", message: "Не удалось изменить комментарий! Повторите попытку позже."});
-      });
+          .then(resp => {
+            if ( resp.data && resp.data.comment ) {
+              const index = this.commentList.findIndex(_comment => _comment.id === resp.data.comment.id);
+              if ( index < 0 ) return;
+              this.commentList[index] = resp.data.comment;
+              this.editShow = false;
+            }
+          })
+          .catch(err => {
+            this.$store.dispatch("toaster", {type: "error", message: "Не удалось изменить комментарий! Повторите попытку позже."});
+          });
     },
     errorBind(message) {
       this.errorMessage = message;
@@ -172,16 +218,16 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-  .comment__table__block {
-    overflow-x: auto;
-    .row__comment {
-      cursor: pointer;
-    }
+.comment__table__block {
+  overflow-x: auto;
+  .row__comment {
+    cursor: pointer;
   }
-  .check__control {
-    input {
-      margin-left: 10px;
-      margin-top: 4px;
-    }
+}
+.check__control {
+  input {
+    margin-left: 10px;
+    margin-top: 4px;
   }
+}
 </style>

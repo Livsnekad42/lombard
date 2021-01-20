@@ -15,7 +15,7 @@
           <tbody>
             <tr v-for="(document, index) in documents" v-bind:key="index">
               <td>{{ document.title }}</td>
-              <td>{{ document.url }}</td>
+              <td><a target="_blank" v-bind:href="'http://test.tezlombard.kz'+document.url">{{document.url}}</a></td>
               <td>{{ document.createdAt | formatDate }}</td>
               <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
             </tr>
@@ -34,7 +34,7 @@
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
-        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf']" v-on:files="submitFiles" />
+        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf', 'jpg']" v-on:files="submitFiles" />
       </div>
       <div class="_submit-block">
         <button @click="save()" type="button" class="btn btn-primary">Сохранить</button>
