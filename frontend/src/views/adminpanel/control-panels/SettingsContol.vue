@@ -109,7 +109,6 @@ export default {
         })
         .catch(err => {
           this.$store.dispatch("toaster", {type: "error", message: "Чё-т не1"});
-          console.log("Err: ", err);
         });
     this.$store.dispatch('actualizeCalcPrices');
   },

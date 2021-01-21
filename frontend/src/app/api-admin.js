@@ -118,3 +118,6 @@ export const editSetting = async data =>
 
 export const delSetting = async data =>
     await http.post("/settings/destroy-setting", data);
+
+export const getPublicSettings = async data =>
+    await http.get("/public/settings");
