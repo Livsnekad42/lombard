@@ -34,7 +34,7 @@ export default {
                 percent = +processingPercent.value;
                 context.commit('setProcessingPercent', percent);
             };
-        }
+        },
     },
     getters: {
         getProcessingPercent(state) {

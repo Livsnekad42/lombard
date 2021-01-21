@@ -44,7 +44,7 @@
       <h4>Изменение настроек</h4>
       <div class="form-group">
         <label for="processingPercent">{{percentProcessingDescr}}</label>
-        <input type="number" class="form-control" id="processingPercent" placeholder="Процент процессинга" v-model="percentProcessing" step="0.05" required>
+        <input type="text" class="form-control" id="processingPercent" placeholder="Процент процессинга" v-model="percentProcessing" step="0.05" required>
         <button type="button" class="btn btn-primary" @click="setSettings(fieldNames['percent'], percentProcessing)">Задать</button>
       </div>
       <div class="form-group">
@@ -120,8 +120,9 @@ export default {
   },
   methods: {
     setSettings(fieldName, val) {
-      if ( !!val && Number.isInteger(+val)) {
-        this.$store.dispatch('setSetting', {fieldName: fieldName, value: +val});
+      const correctVal = val.replace(',', '.');
+      if ( !!correctVal && isFinite(correctVal)) {
+        this.$store.dispatch('setSetting', {fieldName: fieldName, value: correctVal});
       } else {
         this.$store.dispatch("toaster", {type: "error", message: "Введите корректное значение!"});
         console.log("Err: ", val);
