@@ -7,7 +7,7 @@
       <div class="col-12 col-md-6 loan-button-group">
         <h1><span>Online</span> <br />продление</h1>
         <p>Быстрое продление займа без регистрации.</p>
-        <button @click="showModal = 'startRefinance'"
+        <button
                 type="button"
           class="btn mt-3 open-btn">
           Продлить заем
@@ -90,7 +90,7 @@ export default {
     height: 48px;
   }
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 768px) {
   #online {
     width: 100%;
     // height: 50vh;
@@ -201,9 +201,11 @@ export default {
         text-align: center;
       }
   }
+    /*
   .loan-button-group {
     margin-bottom: 130px;
   }
+  */
 }
 @media (max-width: 425px) {
   .loan-button-group {

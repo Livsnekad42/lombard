@@ -293,10 +293,7 @@ export default {
             font-weight: bold;
           }
         }
-        .sums-border {
-          border-right: 2px dashed #000;
 
-        }
       }
       .text-compute {
         color: #9b9b9b;
@@ -313,7 +310,8 @@ export default {
     }
   }
 }
-@media (max-width: 700px) {
+
+@media (max-width: 767px) {
   #compute {
     h1 {
       font-size: 30px !important;
@@ -398,6 +396,11 @@ export default {
   #wr-calc {
     margin-right: 10px;
     margin-left: 10px;
+  }
+}
+@media (min-width: 768px) {
+  .sums-border {
+    border-right: 2px dashed #000;
   }
 }
 </style>
