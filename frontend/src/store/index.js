@@ -10,8 +10,7 @@ import documents from "./modules/documentLoad";
 import comments from "./modules/comments";
 import settings from "./modules/commonSettings";
 
-import { signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization } from "./../app/api-admin";
-import axios from "axios";
+import {signInAdminPanelApi, setHeaderAuthorization, removeHeaderAuthorization, editSetting} from "./../app/api-admin";
 
 const TOASTER_TIME = 4000;
 
@@ -117,6 +116,37 @@ export default new Vuex.Store({
         return;
       }
       commit("toaster", data);
+    },
+    async setSetting(ctx, data) {
+      const newSetting = await new Promise((resolve, reject) => {
+        editSetting(data)
+            .then(res => {
+              if (res.data.err) reject(res);
+              resolve(res);
+            })
+            .catch(err => {
+              reject(err);
+            });
+      });
+      switch (newSetting.data.setting.fieldName) {
+        case 'probePrice_585':
+          if (newSetting.data.setting && !isNaN(+newSetting.data.setting.value)) {
+            ctx.commit('setCalcProbePrice', {type: '585', data: +newSetting.data.setting.value});
+          }
+          break;
+        case 'probePrice_750':
+          if (newSetting.data.setting && !isNaN(+newSetting.data.setting.value)) {
+            ctx.commit('setCalcProbePrice', {type: '750', data: +newSetting.data.setting.value});
+          }
+          break;
+        case  'processingPercent':
+          if (newSetting.data.setting && !isNaN(+newSetting.data.setting.value)) {
+            ctx.commit('setProcessingPercent', +newSetting.data.setting.value);
+          }
+          break;
+        default:
+          console.log('Что-то пошло не так!');
+      }
     }
   },
   getters : {

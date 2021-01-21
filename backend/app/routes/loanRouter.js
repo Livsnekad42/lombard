@@ -88,7 +88,7 @@ router.post("/startTransactions", function (req, res) {
                 })
                 return;
             }
-            const resAmount = amount + (amount * percent);
+            const resAmount = amount + (amount * (percent / 100));
             soapRequest
                 .startTransaction({
                     amount: resAmount,

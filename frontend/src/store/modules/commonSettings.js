@@ -17,25 +17,6 @@ export default {
                     });
             });
         },
-        async setPercent(context, val) {
-            const response = await new Promise((resolve, reject) => {
-                editSetting(val)
-                    .then(res => {
-                        if (res.data.err) reject(res);
-                        resolve(res);
-                    })
-                    .catch(err => {
-                        reject(err);
-                    });
-            });
-            let percent = 0;
-            const processingPercent = response.data.setting.value;
-
-            if (processingPercent && !isNaN(+processingPercent)) {
-                percent = +processingPercent;
-            };
-            context.commit('setProcessingPercent', percent);
-        },
         async actualizePercent(context) {
             const response = await new Promise((resolve, reject) => {
                 getSettings()
@@ -48,12 +29,12 @@ export default {
                     });
             });
             let percent = 0;
-            const processingPercent = response.data.find(elem => elem.fieldName == 'processingPercent').value;
-            if (processingPercent && !isNaN(+processingPercent)) {
-                percent = +processingPercent;
+            const processingPercent = response.data.find(elem => elem.fieldName == 'processingPercent');
+            if (processingPercent && !isNaN(+processingPercent.value)) {
+                percent = +processingPercent.value;
                 context.commit('setProcessingPercent', percent);
             };
-        }
+        },
     },
     getters: {
         getProcessingPercent(state) {

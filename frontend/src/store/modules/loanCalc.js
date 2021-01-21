@@ -15,10 +15,7 @@ const state = {
     "585": '',
     "750": ''
   }
-
-
 };
-
 
 const getters = {
   getCalcBase: state => name => state[name],
@@ -67,8 +64,9 @@ const actions = {
      });
      const response585 = response.data.find(elem => elem.fieldName == 'probePrice_585');
      const response750 = response.data.find(elem => elem.fieldName == 'probePrice_750');
-     if (response585 && !isNaN(+response585)) {
-       gold585.data = +response585;
+
+     if (response585 && !isNaN(+response585.value)) {
+       gold585.data = +response585.value;
      };
      if (response750 && !isNaN(+response750.value)) {
        gold750.data = +response750.value;
@@ -86,26 +84,6 @@ const actions = {
     state.amount = CALCULATE.amount;
     state.returnedAmount = CALCULATE.returnedAmount;
   },
-  async setSetting(ctx, data) {
-    const newSetting = await new Promise((resolve, reject) => {
-      editSetting(data)
-          .then(res => {
-            if (res.data.err) reject(res);
-            resolve(res);
-          })
-          .catch(err => {
-            reject(err);
-          });
-    });
-    switch (newSetting.data.setting.fieldName) {
-      case 'probePrice_585':
-        ctx.commit('setCalcProbePrice', {type: '585', data: newSetting.data.setting.value});
-        break;
-      case 'probePrice_750':
-        ctx.commit('setCalcProbePrice', {type: '750', data: newSetting.data.setting.value});
-        break;
-    }
-  }
 };
 
 export default {

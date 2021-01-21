@@ -44,25 +44,24 @@
       <h4>Изменение настроек</h4>
       <div class="form-group">
         <label for="processingPercent">{{percentProcessingDescr}}</label>
-        <input type="number" class="form-control" id="processingPercent" v-model="percentProcessing" step="0.05">
-        <button type="button" class="btn btn-primary" @click="setPercent(fieldNames['percent'], percentProcessing)">Задать</button>
+        <input type="text" class="form-control" id="processingPercent" placeholder="Процент процессинга" v-model="percentProcessing" step="0.05" required>
+        <button type="button" class="btn btn-primary" @click="setSettings(fieldNames['percent'], percentProcessing)">Задать</button>
       </div>
       <div class="form-group">
         <label for="gold585">{{gold585PriceDescr}}</label>
-        <input  type="number" class="form-control" id="gold585" placeholder="Стоимость 585 пробы" v-model="gold585Price">
+        <input  type="number" class="form-control" id="gold585" placeholder="Стоимость 585 пробы" v-model="gold585Price" required>
         <button type="button" class="btn btn-primary" @click="setSettings(fieldNames['585'], gold585Price)">Задать</button>
       </div>
       <div class="form-group">
         <label for="gold750">{{gold750PriceDescr}}</label>
-        <input  type="number" class="form-control" id="gold750" placeholder="Стоимость 750 пробы" v-model="gold750Price">
+        <input  type="number" class="form-control" id="gold750" placeholder="Стоимость 750 пробы" v-model="gold750Price" required>
         <button type="button" class="btn btn-primary" @click="setSettings(fieldNames['750'], gold750Price)">Задать</button>
     </div>
   </div>
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import axios from "axios";
+
 
 export default {
   name: "SettingsControl",
@@ -94,31 +93,22 @@ export default {
     this.$store.dispatch('getAllSetting')
         .then(response => {
           if ( response.data ) {
-            const responsePercentDescr = response.data.find(elem => elem.fieldName == 'processingPercent').description;
-            const response585Descr = response.data.find(elem => elem.fieldName == 'probePrice_585').description;
-            const response750Descr = response.data.find(elem => elem.fieldName == 'probePrice_750').description;
-            const responsePercentFieldName = response.data.find(elem => elem.fieldName == 'processingPercent').fieldName;
-            const response585FieldName = response.data.find(elem => elem.fieldName == 'probePrice_585').fieldName;
-            const response750FieldName = response.data.find(elem => elem.fieldName == 'probePrice_750').fieldName;
+            const responsePercent = response.data.find(elem => elem.fieldName == 'processingPercent');
+            const response585 = response.data.find(elem => elem.fieldName == 'probePrice_585');
+            const response750 = response.data.find(elem => elem.fieldName == 'probePrice_750');
 
-            if (responsePercentDescr) {
-              this.percentProcessingDescr = response.data.find(elem => elem.fieldName == 'processingPercent').description;
+            if (responsePercent && !!responsePercent.description && !!responsePercent.fieldName) {
+              this.percentProcessingDescr = responsePercent.description;
+              this.fieldNames['percent'] = responsePercent.fieldName;
             };
-            if (response585Descr) {
-              this.gold585PriceDescr = response.data.find(elem => elem.fieldName == 'probePrice_585').description;
+            if (response585 && !!response585.description && !!response585.fieldName) {
+              this.gold585PriceDescr = response585.description;
+              this.fieldNames['585'] = response585.fieldName;
             };
-            if (response750Descr) {
-              this.gold750PriceDescr = response.data.find(elem => elem.fieldName == 'probePrice_750').description;
+            if (response750 && !!response750.description && !!response750.fieldName) {
+              this.gold750PriceDescr = response750.description;
+              this.fieldNames['750'] = response750.fieldName;
             };
-            if (responsePercentFieldName) {
-              this.fieldNames['percent'] = response.data.find(elem => elem.fieldName == 'processingPercent').fieldName;
-            };
-            if (response585FieldName) {
-              this.fieldNames['585'] = response.data.find(elem => elem.fieldName == 'probePrice_585').fieldName;
-            }
-            if (response750FieldName) {
-              this.fieldNames['750'] = response.data.find(elem => elem.fieldName == 'probePrice_750').fieldName;
-            }
           }
         })
         .catch(err => {
@@ -130,23 +120,20 @@ export default {
   },
   methods: {
     setSettings(fieldName, val) {
-      this.$store.dispatch('setSetting', {fieldName: fieldName, value: val});
-    },
-    setPercent(fieldName, val) {
-      this.$store.dispatch('setPercent', {fieldName: fieldName, value: val});
+      const correctVal = val.replace(',', '.');
+      if ( !!correctVal && isFinite(correctVal)) {
+        this.$store.dispatch('setSetting', {fieldName: fieldName, value: correctVal});
+      } else {
+        this.$store.dispatch("toaster", {type: "error", message: "Введите корректное значение!"});
+        console.log("Err: ", val);
+      }
+
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-#prolongMessage {
-  display: flex;
-  flex-direction: column;
-  & textarea {
-    max-width: 500px;
-  }
-}
 button {
   margin: 10px;
 }
