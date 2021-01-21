@@ -17,6 +17,7 @@ const env = {
 if ( settings.DEBUG ) {
     env.username = 'localtez';
     env.password = "localtez";
+    
 } else {
 
 }
