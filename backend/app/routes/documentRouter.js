@@ -35,7 +35,7 @@ router.post("/create-document", (req, res) => {
         res.status(400).json({err: true, text: 'Не выбран файл', code: errorsCode.no_valid});
         return;
     }
-    if ( !data.title ) {
+    if ( !data.title || !data.project ) {
         res.status(400).json({err: true, text: "Заполните обязательные поля", code: errorsCode.no_valid});
     } else {
         let file = req.files.files;
@@ -54,7 +54,7 @@ router.post("/create-document", (req, res) => {
 
 router.post("/edit-document", (req, res) => {
     const data = req.body;
-    if ( !data.title || !data.alias ) {
+    if ( !data.title || !data.alias || !data.project ) {
         res.status(400).json({err: true, text: "Заполните обязательные поля", code: errorsCode.no_valid});
     } else {
         editDocument(data)
