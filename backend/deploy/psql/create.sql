@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS documents (
     title VARCHAR(500),
     alias VARCHAR(500),
     url VARCHAR(500),
+    project VARCHAR(200),
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL
 );
@@ -15,6 +16,7 @@ CREATE TABLE IF NOT EXISTS comments (
     avatar VARCHAR(500),
     "cityId" INTEGER,
     "isPublic" BOOLEAN,
+    "isRead" BOOLEAN DEFAULT False,
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
     FOREIGN KEY ("cityId") REFERENCES "cityLocs"(Id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE
