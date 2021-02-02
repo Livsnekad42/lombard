@@ -15,24 +15,25 @@
           </ul>
         </div>
       </div>
-      <div class="col-sm-4 d-none d-sm-block">
-            <ul v-if="!$store.getters.isLoggedIn" class="lang" style="margin-bottom: 0;">
-              <li class="nav-item">
-                <a class="nav-link" href="#">ҚАЗ</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Рус</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Eng</a>
-              </li>
-            </ul>
-            <ul v-if="$store.getters.isLoggedIn" class="lang">
-              <li class="nav-item">
-                <a class="nav-link" href="#" @click="logout()">Выход</a>
-              </li>
-            </ul>
-          </div>
+      <div class="col-sm-4 d-none d-sm-flex">
+        <ul v-if="!$store.getters.isLoggedIn" class="lang" style="margin-bottom: 0;">
+          <li class="nav-item">
+            <a class="nav-link" href="#">ҚАЗ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Рус</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Eng</a>
+          </li>
+        </ul>
+        <ul v-if="$store.getters.isLoggedIn && currentRouteName != 'Main'" class="lang">
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="logout()">Выход</a>
+          </li>
+        </ul>
+        <button class="btn login-btn" v-if="currentRouteName == 'Main'" @click="login">Вход в личный кабинет</button>
+      </div>
     </nav>
   </header>
 </template>
@@ -40,12 +41,20 @@
 <script>
 export default {
   name: "Header",
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
+    }
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout')
-      .then(() => {
-        this.$router.push('/sign-in-admin')
-      });
+          .then(() => {
+            this.$router.push('/sign-in-admin')
+          });
+    },
+    login() {
+      this.$router.push('/sign-in-admin')
     }
   }
 };
@@ -108,5 +117,11 @@ header {
     text-transform: uppercase;
     // padding-top: 33px;
   }
+}
+.login-btn {
+  background-color: #e51b56;
+  color: #fff;
+  font-size: 24px;
+  padding: 8px;
 }
 </style>

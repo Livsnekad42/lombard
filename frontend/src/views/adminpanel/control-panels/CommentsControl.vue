@@ -6,7 +6,8 @@
         <table class="table table-striped table-hover">
           <thead>
           <tr>
-            <th scope="col">Дата создания</th>
+            <th scope="col"></th>
+            <th >Дата создания</th>
             <th scope="col">Имя</th>
             <th scope="col">Содержание</th>
             <th scope="col">Аватар URL</th>
@@ -16,7 +17,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)">
+          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)" >
+            <td v-bind:class="{ new: !comment.isRead }"></td>
             <td>{{ comment.createdAt | formatDate }}</td>
             <td>{{ comment.username }}</td>
             <td>{{ comment.content }}</td>
@@ -50,7 +52,7 @@
         <input v-model="comment.avatar" type="text" class="form-control" id="user_avatar" placeholder="URL аватара ...">
       </div>
       <div class="form-group">
-        <label for="user_project">Аватар</label>
+        <label for="user_project">Проект</label>
         <input v-model="comment.project" type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
       </div>
       <div class="form-group">
@@ -110,7 +112,8 @@ export default {
         avatar: "",
         isPublic: true,
         cityId: 0, // number
-        project: ""
+        project: "",
+        isRead: false
       },
       commentEdit: null,
       editShow: false,
@@ -137,6 +140,7 @@ export default {
           this.$store.dispatch("toaster", {type: "error", message: "Не удалось создать комментарий! Повторите попытку позже."});
           console.log("Err: ", err);
         });
+
   },
   methods: {
     getAllCity() {
@@ -158,6 +162,10 @@ export default {
           });
     },
     editComment(comment) {
+      comment.isRead = true;
+      this.$store.dispatch("editComment", comment).catch(err => {
+        this.$store.dispatch("toaster", {type: "error", message: "Не удалось изменить комментарий! Повторите попытку позже."});
+      });
       this.commentEdit = comment;
       this.editShow = true;
     },
@@ -174,6 +182,7 @@ export default {
             this.comment.content = "";
             this.comment.avatar = "";
             this.comment.project = "",
+            this.comment.isRead = false,
                 this.comment.isPublic = true;
           })
           .catch(err => {
@@ -229,5 +238,8 @@ export default {
     margin-left: 10px;
     margin-top: 4px;
   }
+}
+.new {
+  background-color: #dc3545;
 }
 </style>
