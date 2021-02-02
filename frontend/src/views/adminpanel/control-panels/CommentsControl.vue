@@ -134,7 +134,6 @@ export default {
         .then(response => {
           if ( response.data ) {
             this.commentList = response.data;
-            console.log(this.commentList);
           }
         })
         .catch(err => {
@@ -177,7 +176,6 @@ export default {
       this.$store.dispatch("addComment", this.comment)
           .then(resp => {
             if ( resp.data && resp.data.comment ) {
-              console.log(resp);
               this.commentList.push(resp.data.comment);
             }
             this.comment.username = "";
