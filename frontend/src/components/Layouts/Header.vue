@@ -2,7 +2,7 @@
   <header>
     <nav class="row align-items-center">
       <div class="col-sm-4 col-12 my-4 d-flex justify-content-center align-items-center">
-        <a class="logo" href="#">
+        <a class="logo" href="/">
           <img src="@/assets/images/Group5Copy.png" class="logo" />
         </a>
       </div>
@@ -15,7 +15,7 @@
           </ul>
         </div>
       </div>
-      <div class="col-sm-4 d-none d-sm-block">
+      <div class="col-sm-4 d-none d-sm-flex">
             <ul v-if="!$store.getters.isLoggedIn" class="lang" style="margin-bottom: 0;">
               <li class="nav-item">
                 <a class="nav-link" href="#">ҚАЗ</a>
@@ -27,11 +27,12 @@
                 <a class="nav-link" href="#">Eng</a>
               </li>
             </ul>
-            <ul v-if="$store.getters.isLoggedIn" class="lang">
+            <ul v-if="$store.getters.isLoggedIn && currentRouteName != 'Main'" class="lang">
               <li class="nav-item">
                 <a class="nav-link" href="#" @click="logout()">Выход</a>
               </li>
             </ul>
+        <a v-if="currentRouteName == 'Main'" href="https://app.tezlombard.kz/" target="_blank" class="btn login-btn">Личный кабинет</a>
           </div>
     </nav>
   </header>
@@ -40,12 +41,20 @@
 <script>
 export default {
   name: "Header",
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
+    }
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout')
       .then(() => {
         this.$router.push('/sign-in-admin')
       });
+    },
+    login() {
+      this.$router.push('/sign-in-admin')
     }
   }
 };
@@ -108,5 +117,11 @@ header {
     text-transform: uppercase;
     // padding-top: 33px;
   }
+}
+.login-btn {
+  background-color: #e51b56;
+  color: #fff;
+  font-size: 20px;
+  padding: 2px 15px;
 }
 </style>

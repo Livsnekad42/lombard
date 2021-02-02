@@ -73,6 +73,14 @@
             Комментарии
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link
+              :to="{ name: 'settings' }"
+              :active-class="'active'"
+              class="nav-link">
+            Настройки
+          </router-link>
+        </li>
       </ul>
     </div>
     <div class="main-content">

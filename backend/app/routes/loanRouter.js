@@ -2,6 +2,30 @@ const express = require("express");
 const router = express.Router();
 const loanService = require("../services/loanService");
 const soapRequest = require("../config/soap");
+const errorsCode = require("../../app/config/_error_type");
+const settingAppController = require("../controllers/settingApp.controller");
+const contents = require("../controllers/content.controller");
+const settingsApp = require("../controllers/settingApp.controller");
+
+router.post("/isProlongation", function (req, res) {
+    settingAppController.getSettingsFromFieldName("prolongationState")
+        .then(prolongationState => {
+            if ( !prolongationState.enable ) {
+                contents.getContentItem("prolongationState_disabled")
+                    .then(contentComponent => {
+                        res.status(200).json({prolongationState: false, content: contentComponent});
+                    })
+                    .catch(err => {
+                        res.status(200).json({prolongationState: false});
+                    });
+            } else {
+                res.status(200).json({prolongationState: true});
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        });
+});
 
 router.post("/getCurrentLoan", function (req, res) {
   loanService
@@ -16,14 +40,26 @@ router.post("/getCurrentLoan", function (req, res) {
 });
 
 router.post("/currentOverdraftSmsCode", function (req, res) {
-  loanService
-    .currentOverdraftSmsCode({
-      ...req.body,
-      ...{ token: req.tokenElombard },
-    })
-    .then((loan) => {
-      res.status(200).json(loan.data);
-    })
+  settingAppController.getSettingsFromFieldName("prolongationState")
+    .then(prolongationState => {
+      if ( !prolongationState.enable ) {
+        res.status(400).json({
+          code: errorsCode.no_permission,
+          errors: ["Пролонгация отключена"],
+          text: "Пролонгация отключена"
+        });
+        return;
+      }
+      loanService
+        .currentOverdraftSmsCode({
+          ...req.body,
+          ...{ token: req.tokenElombard },
+        })
+        .then((loan) => {
+          res.status(200).json(loan.data);
+        })
+        .catch((err) => res.status(500).json(err));
+      })
     .catch((err) => res.status(500).json(err));
 });
 
@@ -40,18 +76,34 @@ router.post("/currentOverdraftWithCodeSMS", function (req, res) {
 });
 
 router.post("/startTransactions", function (req, res) {
-  console.log(req.body);
-  soapRequest
-    .startTransaction({
-      amount: req.body.amount,
-      order: req.body.ticketNumber,
-      newPeriod: req.body.days,
-      type: "startTransaction",
-    })
-    .then((path) => {
-      res.status(200).json(path);
-    })
-    .catch((err) => res.status(500).json(err));
+    settingsApp.getSettingsFromFieldName("processingPercent")
+        .then(data => {
+            const percent = + data.value;
+            const amount = + req.body.amount;
+            if ( isNaN(percent) || isNaN(amount) ) {
+                res.status(400).json({
+                    code: errorsCode.no_valid,
+                    errors: ["api error"],
+                    text: "Приносим извинение, но продолжение операции навозможно."
+                })
+                return;
+            }
+            const resAmount = amount + (amount * (percent / 100));
+            soapRequest
+                .startTransaction({
+                    amount: resAmount,
+                    order: req.body.ticketNumber,
+                    newPeriod: req.body.days,
+                    type: "startTransaction",
+                })
+                .then((path) => {
+                    res.status(200).json(path);
+                })
+                .catch((err) => res.status(500).json(err));
+        })
+        .catch(err => {
+            res.status(500).json({errors: err, code: errorsCode.app_error})
+        });
 });
 
 router.post("/checkStatus", function (req, res) {

@@ -1,5 +1,5 @@
 <template>
-  <div id="shit">
+  <div>
     <!--    <News />-->
     <LoanCalculate />
     <Prolongation />
@@ -29,8 +29,6 @@ export default {
   created() {
     // Проверяем гет параметры на возврат от процессинга успеха операции
     this.getTransactionStatus(this.$route.query);
-    // TODO: в следующем коммите удалить
-    // this.getAuthorize();
   }
 };
 </script>

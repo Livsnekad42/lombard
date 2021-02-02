@@ -202,6 +202,7 @@ export default {
           padding: 5px 20px 5px 20px;
           color: #ffffff;
           background-color: #002e90;
+          cursor: pointer;
         }
       }
     }

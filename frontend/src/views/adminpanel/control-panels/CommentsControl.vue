@@ -50,7 +50,7 @@
         <input v-model="comment.avatar" type="text" class="form-control" id="user_avatar" placeholder="URL аватара ...">
       </div>
       <div class="form-group">
-        <label for="user_project">Аватар</label>
+        <label for="user_project">Проект</label>
         <input v-model="comment.project" type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
       </div>
       <div class="form-group">
@@ -110,7 +110,8 @@ export default {
         avatar: "",
         isPublic: true,
         cityId: 0, // number
-        project: ""
+        project: "",
+        isNew: true
       },
       commentEdit: null,
       editShow: false,
@@ -137,6 +138,7 @@ export default {
           this.$store.dispatch("toaster", {type: "error", message: "Не удалось создать комментарий! Повторите попытку позже."});
           console.log("Err: ", err);
         });
+
   },
   methods: {
     getAllCity() {
@@ -158,6 +160,7 @@ export default {
           });
     },
     editComment(comment) {
+      this.isNew = true;
       this.commentEdit = comment;
       this.editShow = true;
     },
@@ -230,5 +233,18 @@ export default {
     margin-left: 10px;
     margin-top: 4px;
   }
+}
+.new::after {
+  content: "!";
+  position: absolute;
+  left: 0;
+  background-color: red;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 30px;
+  padding-left: 13px;
+  color: #fff;
+  display: block;
 }
 </style>

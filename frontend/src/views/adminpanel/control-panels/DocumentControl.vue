@@ -9,14 +9,16 @@
               <th scope="col">Титул</th>
               <th scope="col">URL</th>
               <th scope="col">Дата создания</th>
+              <th scope="col">Приложение</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(document, index) in documents" v-bind:key="index">
               <td>{{ document.title }}</td>
-              <td>{{ document.url }}</td>
+              <td><a target="_blank" v-bind:href="'http://test.tezlombard.kz'+document.url">{{document.url}}</a></td>
               <td>{{ document.createdAt | formatDate }}</td>
+              <td>{{ document.app }}</td>
               <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
             </tr>
           </tbody>
@@ -31,10 +33,11 @@
         </div>
         <label for="exampleInputEmail1">Титул документа</label>
         <input v-model="titleDocument" type="text" class="form-control" id="exampleInputEmail1" placeholder="Титул документа ...">
+        <input v-model="appDocument" type="text" class="form-control" id="exampleInputApp" placeholder=" Приложение документа ...">
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
-        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf']" v-on:files="submitFiles" />
+        <SelectFiles ref="selectFiles" v-bind:extPatterns="['pdf', 'jpg']" v-on:files="submitFiles" />
       </div>
       <div class="_submit-block">
         <button @click="save()" type="button" class="btn btn-primary">Сохранить</button>
@@ -54,7 +57,8 @@ export default {
       file: null,
       errorMessage: "",
       titleDocument: "",
-      documents: []
+      documents: [],
+      appDocument: ""
     };
   },
   components: {
@@ -99,6 +103,8 @@ export default {
       const data = new FormData();
       data.append("files", this.file, this.file.name);
       data.append("title", this.titleDocument);
+      data.append("app", this.appDocument);
+      console.log(data);
       this.$store.dispatch("loadDocument", data)
         .then(response => {
           if ( response.data.document ) {
@@ -106,6 +112,7 @@ export default {
           }
           this.$refs.selectFiles.files = [];
           this.titleDocument = "";
+          this.appDocument = "";
         })
         .catch(err => {
           this.$store.dispatch("toaster", {type: "error", message: "Не удалось сохранить документ! Повторите попытку позже."});
@@ -145,5 +152,8 @@ tbody {
       font-size: 0.9rem;
     }
   }
+}
+#exampleInputApp {
+  margin-top: 10px;
 }
 </style>

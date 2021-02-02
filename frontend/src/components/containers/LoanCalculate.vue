@@ -80,6 +80,9 @@ import CustomCheckBox from "../ui/customCheckBox";
 export default {
   name: "LoanCalculate",
   components: { CustomCheckBox },
+  beforeCreate() {
+    this.$store.dispatch('actualizeCalcPrices');
+  },
   computed: {
     ...mapGetters(["getCalcBase"]),
 

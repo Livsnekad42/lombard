@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "tests": "nodejs ./tests/testPublicAPI.js",
+    "start": "nodemon server.js",
+    "start-dev": "node --tls-min-v1.0 server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-https-proxy-fix": "^0.17.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
@@ -27,7 +28,7 @@
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "sequelize": "^6.3.4",
-    "soap": "^0.31.0"
+    "soap": "^0.36.0"
   },
   "devDependencies": {}
 }

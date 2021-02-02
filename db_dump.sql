@@ -115,6 +115,85 @@ ALTER SEQUENCE public."cityLocs_id_seq" OWNED BY public."cityLocs".id;
 
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.comments (
+    id integer NOT NULL,
+    project character varying(200),
+    username character varying(200),
+    content character varying(500),
+    avatar character varying(500),
+    "cityId" integer,
+    "isPublic" boolean,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.comments OWNER TO postgres;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO postgres;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: documents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.documents (
+    id integer NOT NULL,
+    title character varying(500),
+    alias character varying(500),
+    url character varying(500),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.documents OWNER TO postgres;
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.documents_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.documents_id_seq OWNER TO postgres;
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -164,6 +243,20 @@ ALTER TABLE ONLY public."affiliateLocs" ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public."cityLocs" ALTER COLUMN id SET DEFAULT nextval('public."cityLocs_id_seq"'::regclass);
+
+
+--
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: documents id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -219,6 +312,28 @@ COPY public."cityLocs" (id, "cityName", latitude, longitude, "createdAt", "updat
 
 
 --
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.comments (id, project, username, content, avatar, "cityId", "isPublic", "createdAt", "updatedAt") FROM stdin;
+7	tezAqsha	dfgdf	sdfsdfsdf		3	f	2020-12-30 13:47:02.757+06	2020-12-30 14:01:43.779+06
+8	tezAqsha	йцукйцук	йцукйцукйцукйцукйцукуйц		3	f	2020-12-30 13:57:14.386+06	2020-12-30 14:01:45.697+06
+13	tezAqsha	qweqwe	xvbdfvbvfbvcv		3	f	2021-01-06 09:42:36.817+06	2021-01-06 09:42:36.817+06
+2	tezAqsha	Индира	Сотрудники ТезКредит обслуживают вежливо и быстро. Оформила займ на точке за 10 минут и пошла с наличными домой!	src/img/about/photo.png	6	t	2020-12-28 16:33:07.806+06	2021-01-08 14:42:02.967+06
+9	tezAqsha	Артем	Текст отзыва	src/img/about/photo.png	2	t	2020-12-30 14:04:37.001+06	2021-01-08 17:09:46.042+06
+\.
+
+
+--
+-- Data for Name: documents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.documents (id, title, alias, url, "createdAt", "updatedAt") FROM stdin;
+12	Договор	dogovor	/media/Dogovor_okazaniya_uslug.pdf	2020-12-25 11:59:54.821+06	2020-12-25 11:59:54.821+06
+\.
+
+
+--
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -239,6 +354,20 @@ SELECT pg_catalog.setval('public."affiliateLocs_id_seq"', 23, true);
 --
 
 SELECT pg_catalog.setval('public."cityLocs_id_seq"', 6, true);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.comments_id_seq', 14, true);
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.documents_id_seq', 12, true);
 
 
 --
@@ -265,6 +394,22 @@ ALTER TABLE ONLY public."cityLocs"
 
 
 --
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documents
+    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -278,6 +423,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public."affiliateLocs"
     ADD CONSTRAINT "affiliateLocs_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES public."cityLocs"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: comments comments_cityId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT "comments_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES public."cityLocs"(id) ON DELETE CASCADE;
 
 
 --

@@ -4,7 +4,7 @@
       <div class="row" id="footer-wrap">
         <div class="col-md-4 mt-md-0 mt-3 ml-auto">
           <img src="@/assets/images/Group5Copy.png" class="logo" />
-          <p class="mt-5">© 2020 TEZ LOMBARD</p>
+          <p class="mt-5">© 2021 TEZ LOMBARD</p>
         </div>
         <div class="col-md-3 mb-md-0 mb-3">
           <h4>Филиалы по всему Казахстану</h4>
@@ -14,6 +14,9 @@
               <a href="#!">Найти ближайший</a>
             </li>
           </ul>
+          <a href="https://tezlombard.kz/media/Pravila_МК_МФО_TEZ_CREDIT.pdf" target="_blank" style="color: white; text-decoration: underline;">
+            Правила предоставления микрокредитов
+          </a>
         </div>
         <div class="col-md-2 mb-md-0 mb-3">
           <h4>С 09:00 до 21:00</h4>
@@ -23,6 +26,7 @@
               Без выходных
             </li>
           </ul>
+          <a href="tel:88000807171" style="color: white;">8 800 080 71 71</a>
         </div>
         <div class="col-md-2 mb-md-0 mb-3"></div>
       </div>
