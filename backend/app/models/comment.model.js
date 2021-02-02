@@ -23,6 +23,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         isPublic: {
             type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        isRead: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         },
     });
 }

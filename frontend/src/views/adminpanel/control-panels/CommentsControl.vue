@@ -6,7 +6,8 @@
         <table class="table table-striped table-hover">
           <thead>
           <tr>
-            <th scope="col">Дата создания</th>
+            <th scope="col"></th>
+            <th >Дата создания</th>
             <th scope="col">Имя</th>
             <th scope="col">Содержание</th>
             <th scope="col">Аватар URL</th>
@@ -16,7 +17,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)">
+          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)" >
+            <td v-bind:class="{ new: !comment.isRead }"></td>
             <td>{{ comment.createdAt | formatDate }}</td>
             <td>{{ comment.username }}</td>
             <td>{{ comment.content }}</td>
@@ -111,7 +113,7 @@ export default {
         isPublic: true,
         cityId: 0, // number
         project: "",
-        isNew: true
+        isRead: false
       },
       commentEdit: null,
       editShow: false,
@@ -160,7 +162,10 @@ export default {
           });
     },
     editComment(comment) {
-      this.isNew = true;
+      comment.isRead = true;
+      this.$store.dispatch("editComment", comment).catch(err => {
+        this.$store.dispatch("toaster", {type: "error", message: "Не удалось изменить комментарий! Повторите попытку позже."});
+      });
       this.commentEdit = comment;
       this.editShow = true;
     },
@@ -178,6 +183,7 @@ export default {
             this.comment.content = "";
             this.comment.avatar = "";
             this.comment.project = "",
+            this.comment.isRead = false,
                 this.comment.isPublic = true;
           })
           .catch(err => {
@@ -234,17 +240,7 @@ export default {
     margin-top: 4px;
   }
 }
-.new::after {
-  content: "!";
-  position: absolute;
-  left: 0;
-  background-color: red;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  font-size: 30px;
-  padding-left: 13px;
-  color: #fff;
-  display: block;
+.new {
+  background-color: #dc3545;
 }
 </style>

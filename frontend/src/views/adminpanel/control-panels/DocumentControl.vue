@@ -5,22 +5,22 @@
       <div>
         <table class="table table-striped table-hover">
           <thead>
-            <tr>
-              <th scope="col">Титул</th>
-              <th scope="col">URL</th>
-              <th scope="col">Дата создания</th>
-              <th scope="col">Приложение</th>
-              <th></th>
-            </tr>
+          <tr>
+            <th scope="col">Титул</th>
+            <th scope="col">URL</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Проект</th>
+            <th></th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="(document, index) in documents" v-bind:key="index">
-              <td>{{ document.title }}</td>
-              <td><a target="_blank" v-bind:href="'http://test.tezlombard.kz'+document.url">{{document.url}}</a></td>
-              <td>{{ document.createdAt | formatDate }}</td>
-              <td>{{ document.app }}</td>
-              <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
-            </tr>
+          <tr v-for="(document, index) in documents" v-bind:key="index">
+            <td>{{ document.title }}</td>
+            <td><a target="_blank" v-bind:href="'http://test.tezlombard.kz'+document.url">{{document.url}}</a></td>
+            <td>{{ document.createdAt | formatDate }}</td>
+            <td>{{ document.project }}</td>
+            <td><button @click="delDocument(document)" type="button" class="btn btn-danger">удалить</button></td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -33,7 +33,7 @@
         </div>
         <label for="exampleInputEmail1">Титул документа</label>
         <input v-model="titleDocument" type="text" class="form-control" id="exampleInputEmail1" placeholder="Титул документа ...">
-        <input v-model="appDocument" type="text" class="form-control" id="exampleInputApp" placeholder=" Приложение документа ...">
+        <input v-model="projectDocument" type="text" class="form-control" id="exampleInputApp" placeholder=" Проект документа ...">
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
@@ -58,7 +58,7 @@ export default {
       errorMessage: "",
       titleDocument: "",
       documents: [],
-      appDocument: ""
+      projectDocument: ""
     };
   },
   components: {
@@ -103,20 +103,20 @@ export default {
       const data = new FormData();
       data.append("files", this.file, this.file.name);
       data.append("title", this.titleDocument);
-      data.append("app", this.appDocument);
+      data.append("project", this.projectDocument);
       console.log(data);
       this.$store.dispatch("loadDocument", data)
-        .then(response => {
-          if ( response.data.document ) {
-            this.documents.push(response.data.document);
-          }
-          this.$refs.selectFiles.files = [];
-          this.titleDocument = "";
-          this.appDocument = "";
-        })
-        .catch(err => {
-          this.$store.dispatch("toaster", {type: "error", message: "Не удалось сохранить документ! Повторите попытку позже."});
-        });
+          .then(response => {
+            if ( response.data.document ) {
+              this.documents.push(response.data.document);
+            }
+            this.$refs.selectFiles.files = [];
+            this.titleDocument = "";
+            this.appDocument = "";
+          })
+          .catch(err => {
+            this.$store.dispatch("toaster", {type: "error", message: "Не удалось сохранить документ! Повторите попытку позже."});
+          });
     },
     delDocument(document) {
       let indexDocument = -1;
@@ -127,13 +127,13 @@ export default {
       } else {
         indexDocument = this.documents.findIndex(_doc => _doc.id === document.id);
         this.$store.dispatch("deleteDocument", document.id)
-          .then(response => {
-            this.documents.splice(indexDocument, 1);
-          })
-          .catch(err => {
-            if ( !this.$store.dispatch("controlsResponse", err) ) this.$router.push({ path: "/sign-in-admin" });
-            else this.$store.dispatch("toaster", {type: "error", message: "Не удалось удалить документ! Повторите попытку позже."});
-          });
+            .then(response => {
+              this.documents.splice(indexDocument, 1);
+            })
+            .catch(err => {
+              if ( !this.$store.dispatch("controlsResponse", err) ) this.$router.push({ path: "/sign-in-admin" });
+              else this.$store.dispatch("toaster", {type: "error", message: "Не удалось удалить документ! Повторите попытку позже."});
+            });
       }
     }
   }

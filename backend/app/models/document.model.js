@@ -9,5 +9,8 @@ module.exports = (sequelize, Sequelize) => {
         url: {
             type: Sequelize.STRING,
         },
+        project: {
+            type: Sequelize.STRING
+        },
     });
 }

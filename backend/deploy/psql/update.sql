@@ -1,0 +1,2 @@
+ALTER TABLE comments ADD COLUMN "isRead" BOOLEAN DEFAULT False;
+ALTER TABLE documents ADD COLUMN project VARCHAR(200);
