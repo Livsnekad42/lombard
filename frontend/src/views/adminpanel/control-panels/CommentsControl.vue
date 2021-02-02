@@ -6,7 +6,8 @@
         <table class="table table-striped table-hover">
           <thead>
           <tr>
-            <th scope="col">Дата создания</th>
+            <th scope="col"></th>
+            <th >Дата создания</th>
             <th scope="col">Имя</th>
             <th scope="col">Содержание</th>
             <th scope="col">Аватар URL</th>
@@ -16,7 +17,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)" v-bind:class="{ new: !comment.isRead }">
+          <tr class="row__comment" v-for="(comment, index) in commentList" v-bind:key="index" @click="editComment(comment)" >
+            <td v-bind:class="{ new: !comment.isRead }"></td>
             <td>{{ comment.createdAt | formatDate }}</td>
             <td>{{ comment.username }}</td>
             <td>{{ comment.content }}</td>
@@ -239,17 +241,7 @@ export default {
     margin-top: 4px;
   }
 }
-.new::after {
-  content: "!";
-  position: absolute;
-  left: 0;
-  background-color: red;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  font-size: 30px;
-  padding-left: 13px;
-  color: #fff;
-  display: block;
+.new {
+  background-color: #dc3545;
 }
 </style>
