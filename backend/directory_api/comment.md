@@ -11,4 +11,18 @@ POST http://test.tezlombard.kz/api/public/createComment
        isRead: boolean;
        cityId: number;
     }
+
+POST http://test.tezlombard.kz/api/public/edit-comment
+
+    Изменение комментария
     
+    <- data: {
+       id: uint;
+       username: string;
+       content: string;
+       project: string;
+       avatar: string;
+       isPublic: boolean;
+       isRead: boolean;
+       cityId: number;
+    }
