@@ -7,7 +7,7 @@
       <div class="col-12 col-md-6 loan-button-group">
         <h1><span>Online</span> <br />продление</h1>
         <p>Быстрое продление займа без регистрации.</p>
-        <button
+        <button @click="showModal = ''"
                 type="button"
           class="btn mt-3 open-btn">
           Продлить заем
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+// startRefinance
 import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Prolongation",
