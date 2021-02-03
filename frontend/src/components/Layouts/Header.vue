@@ -32,7 +32,7 @@
             <a class="nav-link" href="#" @click="logout()">Выход</a>
           </li>
         </ul>
-        <button class="btn login-btn" v-if="currentRouteName == 'Main'" @click="login">Вход в личный кабинет</button>
+        <a class="btn login-btn" href="http://app.tezlombard.kz" v-if="currentRouteName == 'Main'" target="_blank">Личный кабинет</a>
       </div>
     </nav>
   </header>
@@ -121,7 +121,7 @@ header {
 .login-btn {
   background-color: #e51b56;
   color: #fff;
-  font-size: 24px;
-  padding: 8px;
+  font-size: 20px;
+  padding: 2px 15px;
 }
 </style>
