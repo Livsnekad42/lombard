@@ -43,6 +43,16 @@ exports.getDocument = async (id) => {
     await getDocumentFromID(id);
 }
 
+exports.getDocumentsFromProjectName = async (project) => {
+    try {
+        return await Documents.findAll({
+            where: { project }
+        });
+    } catch (e) {
+        return e;
+    }
+}
+
 exports.getDocumentList = async () => {
     try {
         return await Documents.findAll();
