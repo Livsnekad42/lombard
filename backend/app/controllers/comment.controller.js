@@ -1,7 +1,5 @@
 const db = require("../config/db_config");
-const settings = require("./../config/_setings");
 const Comments = db.comments;
-const City = db.cityLoc;
 
 /**
  * Метод добавления комментария

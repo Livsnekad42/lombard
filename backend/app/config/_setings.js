@@ -16,6 +16,7 @@ exports.OneClickUrl =
 exports.returnUrl = "http://tezlombard.kz"
 exports.currentDate = `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 exports.currencyCode = "398";
+exports.minimalAmountProcessing = 50;
 exports.languageCode = "ru";
 exports.proxyPath = "https://payment.processinggmbh.ch/CNPMerchantWebServices/services/CNPMerchantWebService3"
 // exports.proxyPath = "https://test.processing.kz"

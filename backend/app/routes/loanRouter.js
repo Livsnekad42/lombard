@@ -5,7 +5,7 @@ const soapRequest = require("../config/soap");
 const errorsCode = require("../../app/config/_error_type");
 const settingAppController = require("../controllers/settingApp.controller");
 const contents = require("../controllers/content.controller");
-const settingsApp = require("../controllers/settingApp.controller");
+const settings = require("./../config/_setings");
 
 router.post("/isProlongation", function (req, res) {
     settingAppController.getSettingsFromFieldName("prolongationState")
@@ -76,7 +76,7 @@ router.post("/currentOverdraftWithCodeSMS", function (req, res) {
 });
 
 router.post("/startTransactions", function (req, res) {
-    settingsApp.getSettingsFromFieldName("processingPercent")
+    settingAppController.getSettingsFromFieldName("processingPercent")
         .then(data => {
             const percent = + data.value;
             const amount = + req.body.amount;
@@ -88,7 +88,11 @@ router.post("/startTransactions", function (req, res) {
                 })
                 return;
             }
-            const resAmount = amount + (amount * (percent / 100));
+            let processingPercent = amount * (percent / 100);
+            if ( processingPercent < settings.minimalAmountProcessing ) {
+                processingPercent = settings.minimalAmountProcessing;
+            }
+            const resAmount = amount + processingPercent;
             soapRequest
                 .startTransaction({
                     amount: resAmount,

@@ -10,9 +10,20 @@ const {
 const { getSettingsApp } = require("../controllers/settingApp.controller");
 const { getContentsAll } = require("../controllers/content.controller");
 const { loanCalculate } = require("../../app/requests/loan");
+const { getDocumentsFromProjectName } = require("../controllers/document.controller");
 const errorsCode = require("../../app/config/_error_type");
 const Validator = require("../validators/validators");
 
+
+// Documents
+router.get("/document/:projectName", (req, res) => {
+    const project = req.params.projectName;
+    getDocumentsFromProjectName(project)
+        .then((documents) => {
+            res.status(200).json(documents);
+        })
+        .catch((err) => res.status(400).json(err));
+});
 
 // Comments
 router.get("/comments", (req, res) => {

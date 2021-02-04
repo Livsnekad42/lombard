@@ -1,3 +1,14 @@
+GET http://test.tezlombard.kz/api/public/document/:projectName
+
+
+    -> [{
+        title: string;
+        alias: string;
+        project: string;
+        url: string;
+    }]
+
+
 GET http://test.tezlombard.kz/api/public/all-city-location
 
    

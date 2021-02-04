@@ -33,7 +33,22 @@
         </div>
         <label for="exampleInputEmail1">Титул документа</label>
         <input v-model="titleDocument" type="text" class="form-control" id="exampleInputEmail1" placeholder="Титул документа ...">
-        <input v-model="projectDocument" type="text" class="form-control" id="exampleInputApp" placeholder=" Проект документа ...">
+        <div class="form-group">
+          <label for="user_project">Проект</label>
+          <select
+              id="user_project"
+              v-model="projectDocument"
+              class="custom-select"
+          >
+            <option value="" disabled selected>Укажите название проекта...</option>
+            <option
+                v-for="project in projectList"
+                selected
+                :key="project"
+                :value="project"
+            >{{ project }}</option>
+          </select>
+        </div>
         <small id="emailHelp" class="form-text text-muted">*обязательное поле.</small>
       </div>
       <div>
@@ -50,6 +65,7 @@
 
 <script>
 import SelectFiles from "../../../components/containers/SelectFiles";
+import { projectList } from '../../../_config';
 export default {
   name: "DocumentControl",
   data() {
@@ -58,7 +74,8 @@ export default {
       errorMessage: "",
       titleDocument: "",
       documents: [],
-      projectDocument: ""
+      projectDocument: "",
+      projectList: projectList
     };
   },
   components: {
@@ -90,6 +107,10 @@ export default {
       }
       if ( !this.file ) {
         this.errorBind("Выберите файл!");
+        return false;
+      }
+      if ( !this.projectDocument ) {
+        this.errorBind("Укажите название проекта!");
         return false;
       }
       return true;

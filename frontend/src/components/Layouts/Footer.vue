@@ -14,9 +14,7 @@
               <a href="#!">Найти ближайший</a>
             </li>
           </ul>
-          <a href="https://tezlombard.kz/media/Pravila_МК_МФО_TEZ_CREDIT.pdf" target="_blank" style="color: white; text-decoration: underline;">
-            Правила предоставления микрокредитов
-          </a>
+          <a href="http://test.tezlombard.kz/media/Pravila_MK_TEZ_LOMBARD.pdf" target="_blank" style="color: white; text-decoration: underline;"> Правила предоставления микрокредитов </a>
         </div>
         <div class="col-md-2 mb-md-0 mb-3">
           <h4>С 09:00 до 21:00</h4>
