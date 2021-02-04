@@ -53,7 +53,19 @@
       </div>
       <div class="form-group">
         <label for="user_project">Проект</label>
-        <input v-model="comment.project" type="text" class="form-control" id="user_project" placeholder="Название проекта ...">
+        <select
+            id="user_project"
+            v-model="comment.project"
+            class="custom-select"
+        >
+          <option value="" disabled selected>Укажите название проекта...</option>
+          <option
+              v-for="project in projectList"
+              selected
+              :key="project"
+              :value="project"
+          >{{ project }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="user_city">Город</label>
@@ -62,6 +74,7 @@
             v-model="comment.cityId"
             class="custom-select"
         >
+          <option value="" disabled selected>Укажите город ...</option>
           <option
               v-for="city in citiesList"
               selected
@@ -90,6 +103,7 @@ import UpdateComment from "./modals/updateComment";
 import {
   getAllCities
 } from "../../../app/api-admin";
+import { projectList } from '../../../_config';
 import router from "@/router";
 export default {
   name: "CommentsControl",
@@ -122,7 +136,8 @@ export default {
         updateComment: (data) => {
           this.updateComment(data);
         }
-      }
+      },
+      projectList: projectList
     };
   },
   components: {
@@ -241,5 +256,8 @@ export default {
 }
 .new {
   background-color: #dc3545;
+}
+option:first {
+  color: #999;
 }
 </style>
