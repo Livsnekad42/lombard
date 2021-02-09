@@ -15,8 +15,9 @@ exports.startTransaction = async ({ amount, order, newPeriod }) => {
         totalAmount: amount * 100,
         currencyCode: config.currencyCode,
         languageCode: config.languageCode,
-        merchantLocalDateTime: config.currentDate,
+        merchantLocalDateTime: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`, // config.currentDate
         customerReference: customerReferenceNum,
+        // goodsList: `Продление займа. Оплата: ${amount}`,
         returnURL: `${config.returnUrl}?tn=${order}&period=${newPeriod}&ref=${customerReferenceNum}`,
       },
     };
