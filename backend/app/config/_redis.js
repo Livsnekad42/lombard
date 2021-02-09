@@ -1,6 +1,6 @@
 const redis = require("redis");
 const settings = require("./_setings");
-const requests = require("../requests/auth");
+const { getAuthorization } = require("../services/authService");
 
 
 const RedisApi = (function () {
@@ -37,6 +37,18 @@ const RedisApi = (function () {
             }
             return this.redis;
         };
+        this.setData = function (_key, value) {
+            const r = this.getRedisConnect();
+            r.set(_key, value, 'EX', settings.expiresToken);
+        };
+        this.getData = function (_key) {
+            const r = this.getRedisConnect();
+            return new Promise((resolve, reject) => {
+                r.get(_key, (err, data) => {
+                    resolve(data);
+                });
+            });
+        };
         this.setAuthToken = function (){
             return new Promise((resolve, reject) => {
                 const r = this.getRedisConnect();
@@ -44,25 +56,18 @@ const RedisApi = (function () {
                     login: settings.mainLogin,
                     password: settings.mainPassword,
                 };
-                requests.authorized(sendData)
-                    .then(resp => {
-                        if ( !!resp.errors ) {
-                            console.error("Err Auth from Elombard: ", resp.errors);
-                            reject("Err Auth from Elombard: " + resp.errors);
-                        }
-                        const token = resp.data.data.token;
-                        r.set(this.authNameField, token, 'EX', settings.expiresToken);
-                        resolve(token);
-                    })
-                    .catch(err => {
-                        reject(err);
-                    });
+                getAuthorization().then(data => {
+                    const token = data.data.token;
+                    r.set(this.authNameField, token, 'EX', settings.expiresToken);
+                    resolve(token);
+                }).catch(err => {
+                    reject(err);
+                });
             });
         };
         this.getAuthToken = function () {
             return new Promise((resolve, reject) => {
-                const r = this.getRedisConnect();
-                r.get(this.authNameField, (err, data) => {
+                this.getData(this.authNameField).then(data => {
                     if ( !data ) {
                         this.setAuthToken()
                             .then(token => {
