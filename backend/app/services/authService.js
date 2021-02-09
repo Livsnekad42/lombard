@@ -22,7 +22,7 @@ exports.getAuthorizationTezCreditLogin = () => {
   return new Promise((resolve, reject) => {
     const sendData = {
       login: settings.tezCreditLogin,
-      password: settings.mainPassword,
+      password: settings.tezCreditPassword,
     };
     requests
         .authorized(sendData)
