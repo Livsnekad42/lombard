@@ -1,11 +1,13 @@
 // логин тезломбард
-exports.mainLogin = "TezLombardUser";
+// exports.mainLogin = "TezLombardUser";
+// exports.mainPassword = "8a$Lnz$B8Y6";
+exports.mainLogin = "TezLombardTest";
+exports.mainPassword = "TezTest";
 exports.bin = "141040021479";
 // логин тезкредит
 exports.tezCreditLogin = "TezCreditUser";
+exports.tezCreditPassword = "8a$Lnz$B8Y6";
 exports.binTezCredit = "191240008973";
-
-exports.mainPassword = "8a$Lnz$B8Y6";
 exports.expiresToken = 60 * 40;
 // exports.mid = "000000000000058";
 exports.basePath = "";
