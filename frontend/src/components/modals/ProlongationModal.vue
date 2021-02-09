@@ -66,7 +66,7 @@ export default {
         contained: false,
         direction: "ltr",
         data: null,
-        min: 3,
+        min: 5,
         max: 30,
         interval: 1,
         disabled: false,

@@ -111,14 +111,14 @@ router.post("/startTransactions", function (req, res) {
 });
 
 router.post("/checkStatus", function (req, res) {
-  console.log(req.body);
-  console.log(req.header("x-requested-with"));
+  console.log("*** checkStatus: ", req.body);
+  console.log("*** header: ", req.header("x-requested-with"));
   soapRequest
     .transactionStatus({
       customerRef: req.body.referenceNr,
     })
     .then((status) => {
-      // console.log("status", status.transactionStatus);
+      console.log("*** status", status.transactionStatus);
       if (status.transactionStatus === "PAID") {
         loanService
           .getCreateProlongations({
@@ -126,7 +126,7 @@ router.post("/checkStatus", function (req, res) {
             ...{ token: req.tokenElombard },
           })
           .then((results) => {
-            console.log(results.data);
+            console.log("### ", results.data);
             res.status(200).json(results.data);
           })
           .catch((err) => {

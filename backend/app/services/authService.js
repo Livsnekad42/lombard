@@ -1,5 +1,6 @@
 const settings = require("../config/_setings");
 const requests = require("../requests/auth");
+
 exports.getAuthorization = () => {
   return new Promise((resolve, reject) => {
     const sendData = {
@@ -16,3 +17,20 @@ exports.getAuthorization = () => {
       });
   });
 };
+
+exports.getAuthorizationTezCreditLogin = () => {
+  return new Promise((resolve, reject) => {
+    const sendData = {
+      login: settings.tezCreditLogin,
+      password: settings.tezCreditPassword,
+    };
+    requests
+        .authorized(sendData)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+  });
+}

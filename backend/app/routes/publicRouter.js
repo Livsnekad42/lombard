@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const settings = require("../config/_setings");
+const RedisApi = require("../../app/config/_redis");
+const { getAuthorizationTezCreditLogin } = require("../services/authService");
 
 const { getCityAllLocations } = require("../controllers/map.controller");
 const {
@@ -103,17 +105,16 @@ router.post("/calculate", (req, res) => {
      * }
      * @returns {undefined}
      */
-
     const validFields = [
         {
-            field: "creditSum", 
-            required: true, 
-            validFunc: (val) => {return +val >= 10}, 
+            field: "creditSum",
+            required: true,
+            validFunc: (val) => {return +val >= 10},
         },
         {
-            field: "creditPeriod", 
-            required: true, 
-            validFunc: (val) => {return +val > 0}, 
+            field: "creditPeriod",
+            required: true,
+            validFunc: (val) => {return +val > 0},
         }
     ];
 
@@ -124,14 +125,38 @@ router.post("/calculate", (req, res) => {
         return;
     }
 
-    data.orgBIN = settings.bin;
-    data.token = req.tokenElombard;
+    data.orgBIN = settings.binTezCredit;
 
-    loanCalculate(data)
-        .then((resp) => {
-            res.status(200).json(resp.data);
-        })
-        .catch((err) => res.status(400).json(err));
+    const redis = new RedisApi();
+    const keyTezCredit = "TezCreditUser";
+    redis.getData(keyTezCredit)
+        .then(token => {
+            // let token = null;
+            if ( !token ) {
+                getAuthorizationTezCreditLogin()
+                    .then(_data => {
+                        const _token = _data.data.token;
+                        redis.setData(keyTezCredit, _token);
+
+                        data.token = _token;
+                        loanCalculate(data)
+                            .then((resp) => {
+                                res.status(200).json(resp.data);
+                            })
+                            .catch((err) => res.status(400).json(err));
+
+                    }).catch(err => {
+                        res.status(400).json({error: err});
+                    });
+            } else {
+                data.token = token;
+                loanCalculate(data)
+                    .then((resp) => {
+                        res.status(200).json(resp.data);
+                    })
+                    .catch((err) => res.status(400).json(err));
+            }
+        });
 });
 
 // settings
