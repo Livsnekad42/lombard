@@ -114,7 +114,7 @@ app.use((req, res, next) => {
       });
 });
 
-global.__baseurl = "http://back-tezlombard.kz";
+global.__baseurl = "http://tezlombard.kz";
 app.use(cookieParser());
 // const cors = require("cors");
 // app.use(cors());
