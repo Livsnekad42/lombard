@@ -30,4 +30,4 @@ exports.proxyPath = "https://payment.processinggmbh.ch/CNPMerchantWebServices/se
 exports.media = "/media/"
 exports.secret = '2W9@fd356%ee!csd-67C8df8m6J4'
 exports.expiresIn = 60 * 60 * 4;
-exports.DEBUG = true;
+exports.DEBUG = false;
