@@ -165,7 +165,7 @@ router.get("/settings", (req, res) => {
         .then((settingsList) => {
             res.status(200).json(settingsList);
         })
-        .catch((err) => res.status(400).json(err));
+        .catch((err) => res.status(400).json({error: err}));
 });
 
 router.get("/contents-app", (req, res) => {

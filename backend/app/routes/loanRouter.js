@@ -92,7 +92,7 @@ router.post("/startTransactions", function (req, res) {
             if ( processingPercent < settings.minimalAmountProcessing ) {
                 processingPercent = settings.minimalAmountProcessing;
             }
-            const resAmount = amount + processingPercent;
+            const resAmount = amount; // + processingPercent;
             soapRequest
                 .startTransaction({
                     amount: resAmount,
