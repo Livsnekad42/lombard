@@ -2,28 +2,28 @@
   <div class="popup__veil" id="parent_popup" v-if="showModal">
     <IInAndLoanModal
       v-if="showModal === 'startRefinance'"
-      @close="showModal = null"
+      @close="close()"
     />
     <ProlongationModal
       v-if="showModal === 'prolongation'"
-      @close="showModal = null"
+      @close="close()"
     />
     <ReadyProlongationModal
       v-if="showModal === 'readyProlongation'"
-      @close="showModal = null"
+      @close="close()"
     />
     <DeclineProlongationModal
       v-if="showModal === 'declineProlongation'"
-      @close="showModal = null"
+      @close="close()"
     />
     <DeclineLoanData
       v-if="showModal === 'declineLoanData'"
-      @close="showModal = null"
+      @close="close()"
       :errorText="title"
     />
     <SmsCodeModal
       :responseText="title"
-      @close="showModal = null"
+      @close="close()"
       v-if="showModal === 'smsCodeModal'"
     />
   </div>
@@ -44,7 +44,7 @@ export default {
     SmsCodeModal: () => import("./smsCodeModal")
   },
   computed: {
-    ...mapGetters(["getModalBase"]),
+    ...mapGetters(["getModalBase", "getContext"]),
     showModal: {
       get() {
         return this.getModalBase("type");
@@ -60,10 +60,19 @@ export default {
       set(value) {
         this.setModalBase({ type: "title", data: value });
       }
+    },
+    contextData: {
+      get() {
+        return this.getContext;
+      }
     }
   },
   methods: {
-    ...mapMutations(["setModalBase"])
+    ...mapMutations(["setModalBase", "freeContext"]),
+    close() {
+      this.showModal = null;
+      this.freeContext();
+    }
   }
 };
 </script>

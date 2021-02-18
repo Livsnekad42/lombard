@@ -111,34 +111,42 @@ router.post("/startTransactions", function (req, res) {
 });
 
 router.post("/checkStatus", function (req, res) {
-  console.log("*** checkStatus: ", req.body);
-  console.log("*** header: ", req.header("x-requested-with"));
   soapRequest
     .transactionStatus({
       customerRef: req.body.referenceNr,
     })
     .then((status) => {
-      console.log("*** status", status.transactionStatus);
+      console.log("*** status", status);
       if (status.transactionStatus === "PAID") {
-        loanService
-          .getCreateProlongations({
-            ...req.body,
-            ...{ token: req.tokenElombard },
-          })
-          .then((results) => {
-            console.log("### ", results.data);
-            res.status(200).json(results.data);
-          })
-          .catch((err) => {
-            res.status(200).json(err);
+          loanService
+              .getCreateProlongations({
+                ...req.body,
+                ...{ token: req.tokenElombard },
+              })
+              .then((results) => {
+                console.log("### ", results.data);
+                const data = {
+                    receipt: status,
+                    prolongation: results.data
+                };
+                res.status(200).json(data);
+              })
+              .catch((err) => {
+                res.status(200).json(err);
+              });
+      }
+      if (status.transactionStatus === "DECLINED") {
+          res.status(500).json({err :'transactionErr'});
+      }
+      if (status.transactionStatus === "NO_SUCH_TRANSACTION") {
+          res.status(500).json({err :'transactionErr'});
+      }
+      if (status.transactionStatus === "MID_DISABLED") {
+          res.status(500).json({
+              err :'transactionErr',
+              message: 'Операция невозможна. Свяжитесь со службой поддержки.'
           });
       }
-        if (status.transactionStatus === "DECLINED") {
-            res.status(500).json({err :'transactionErr'});
-        }
-        if (status.transactionStatus === "NO_SUCH_TRANSACTION") {
-            res.status(500).json({err :'transactionErr'});
-        }
     })
     .catch((err) => {
         res.status(500).json(err);

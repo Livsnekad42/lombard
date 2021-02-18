@@ -140,9 +140,8 @@ const actions = {
         commit("setLoaderBase", { type: "type", data: "fullScreen" });
         dispatch("getProcessingTransactionStatus", param)
           .then(data => {
-            console.log("whith out all", data);
             commit("setLoaderBase", { type: "type", data: "" });
-            commit("setModalBase", { type: "type", data: "readyProlongation" });
+            commit("setModalBase", { type: "type", data: "readyProlongation", context: data });
             router.replace("/");
             // location.replace("/");
           })
