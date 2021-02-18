@@ -38,10 +38,17 @@ redisApi.setAuthToken()
     });
 
 settings.basePath = __dirname;
+
+// безопасные общедоступные методы
 const safe_methods = [
     "/api/auth.*",
     "/api/loan.*",
     "/api/public.*",
+];
+// методы, для которых обязателен корпоративный токен
+const token_methods = [
+    "/api/loan/*",
+    "/api/public/calculate"
 ];
 
 app.use(fileUpload({
@@ -104,14 +111,21 @@ app.use((req, res, next) => {
 
 // Пробрасываем копоративный токен в объект запроса, для удобства
 app.use((req, res, next) => {
-  redisApi.getAuthToken()
-      .then(token => {
-        req.tokenElombard = token;
-        next();
-      })
-      .catch(err => {
-        res.status(401).json({error: "Not Auth Token"});
-      });
+    for (const safe of token_methods) {
+        const regPath = new RegExp(safe);
+        if ( regPath.test(req.path) ) {
+            redisApi.getAuthToken()
+                .then(token => {
+                    req.tokenElombard = token;
+                    next();
+                })
+                .catch(err => {
+                    res.status(401).json({error: "Not Auth Token"});
+                });
+            return;
+        }
+    }
+    next();
 });
 
 global.__baseurl = "http://tezlombard.kz";
