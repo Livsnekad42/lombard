@@ -156,7 +156,6 @@ export default new Vuex.Store({
     toasterSuccess: state => state.modalSuccess,
     toasterWarning: state => state.modalWarning,
     toasterMessage: state => state.modalMessage,
-
   },
   modules: {
     modal,
