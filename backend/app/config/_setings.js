@@ -1,8 +1,8 @@
 // логин тезломбард
-// exports.mainLogin = "TezLombardUser";
-// exports.mainPassword = "8a$Lnz$B8Y6";
-exports.mainLogin = "TezLombardTest";
-exports.mainPassword = "TezTest";
+exports.mainLogin = "TezLombardUser";
+exports.mainPassword = "8a$Lnz$B8Y6";
+// exports.mainLogin = "TezLombardTest";
+// exports.mainPassword = "TezTest";
 exports.bin = "141040021479";
 // логин тезкредит
 exports.tezCreditLogin = "TezCreditUser";

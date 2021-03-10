@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button @click="$emit('close')" type="button" class="close">
+          <button @click="close()" type="button" class="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -83,6 +83,11 @@ export default {
     sendVerification() {
       this.validateError = "";
       this.smsVerification();
+    },
+    close() {
+      this.smsCode = "";
+      this.validateError = "";
+      this.$emit('close');
     }
   }
 };
